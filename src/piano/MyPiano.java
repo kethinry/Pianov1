@@ -887,11 +887,7 @@ public class MyPiano extends JFrame implements WindowListener, ActionListener {
 		Toolkit.getDefaultToolkit().setDynamicLayout(false);
 		return Toolkit.getDefaultToolkit().getLockingKeyState(KeyEvent.VK_CAPS_LOCK);
 	}
-	public String getStringWithTime(int keyCode,long time){//返回一个带有时间参数的字符串
-		
-		return getString(keyCode)+String.valueOf(time);
-		
-	}
+
 	public synchronized int getChannel(int instrument){
 		if(instrument>=32||(instrument>=16&&instrument<=23)) return 0;
 		channelNum++;

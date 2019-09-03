@@ -21,9 +21,6 @@ import java.net.MalformedURLException;
 
 public class MyKeyListener implements KeyListener {
 	MyPiano myPiano;
-	long lastTime = 0;
-	String musicString;
-	String lastMusicString = "";
 	boolean isReleased[];
 	public MyKeyListener(MyPiano myPiano) {
 		this.myPiano = myPiano;
@@ -35,7 +32,7 @@ public class MyKeyListener implements KeyListener {
 		int a = arg0.getKeyCode();
 		if(a>128)return;
 		if(isReleased[a]){
-			long t = System.currentTimeMillis() - myPiano.beginTime;
+			long t = System.currentTimeMillis() - myPiano.beginTime;//当前时间减去按下开始演奏的时间
 			if (myPiano.transformKeyCodeToCharacter(a) > 0) {
 				myPiano.timeString = myPiano.timeString + String.valueOf(t) + " ";
 				
@@ -46,15 +43,15 @@ public class MyKeyListener implements KeyListener {
 			}
 			int userButton = myPiano.transformKeyCodeToButtonCode(a);
 			
-			switch (myPiano.mode) {
-			case 0:
-			case 2:
+			switch (myPiano.mode) {  //不同模式，按下键盘的色彩不同
+			case 0://自由演奏
+			case 2://乐谱记录
 				myPiano.player.play(myPiano.getString(a));
 				if (!myPiano.isColorful) {// 黑白键盘模式
 					myPiano.btn[myPiano.transformKeyCodeToButtonCode(a)].setBackground(Color.BLACK);
-					if (myPiano.transformKeyCodeToButtonCode(a) == 41)
+					if (myPiano.transformKeyCodeToButtonCode(a) == 41) //41键是shift，另一边52也要显示
 						myPiano.btn[52].setBackground(Color.BLACK);
-					if (myPiano.transformKeyCodeToButtonCode(a) == 53)
+					if (myPiano.transformKeyCodeToButtonCode(a) == 53) //53和57都是ctrl
 						myPiano.btn[57].setBackground(Color.BLACK);
 				} else {// 多彩键盘模式
 					if (myPiano.colorNum >= 6)
@@ -71,7 +68,7 @@ public class MyKeyListener implements KeyListener {
 				}
 				break;
 
-			case 1:
+			case 1://教学模式
 				if (myPiano.currentNum < myPiano.numOfNote) {
 					if (userCharacter == myPiano.character[myPiano.currentNum]) { // 输入正确
 						myPiano.player.play(myPiano.getString(a));
@@ -103,10 +100,6 @@ public class MyKeyListener implements KeyListener {
 							}
 							sound1.play();
 							myPiano.btn[userButton].setBackground(Color.RED);
-							if (userButton == 41)
-								myPiano.btn[52].setBackground(Color.RED);
-							if (userButton == 53)
-								myPiano.btn[57].setBackground(Color.RED);
 						} else {
 							myPiano.btn[userButton].setBackground(myPiano.myPink);
 							if (userButton == 41)

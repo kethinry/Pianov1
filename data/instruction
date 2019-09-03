@@ -1,0 +1,30 @@
+这是一个说明文档，旨在说清楚每个函数的具体功能
+MyPiano.java
+public boolean isUpperLetter() {// 判断大写锁定是否打开
+public synchronized int getChannel(int instrument)
+instrument的范围是什么意思？
+函数旨在每次更新音轨
+public String getString(int keyCode)
+这里全部用大小写锁定控制是否升半音
+wxpNote是五线谱功能需要的字符串参数，包括音符和音长
+note是使用play函数时需要的参数，包括音轨号，乐器，五线谱字符串
+numOfNote是什么？
+MyPanel.java
+设置主屏幕键盘按键的UI界面，包括鼠标监听
+MyKeyListener.java
+构造方法初始化是先将所有按钮释放
+public void keyPressed(KeyEvent arg0)
+按下键盘的各类响应事件，包括演奏（49行，74行），设置timestring，这个干嘛用？
+currentnum是啥？82行到底在干啥？
+输入不正确的那个文件在干啥，异常处理呢？sound1是啥，.play想干啥
+230到246行是音长快捷键，似乎是也可以直接扔了
+248到255在干啥我也不清楚，好像还是音高问题，但是没有设置下拉框
+～是切换音高快捷键，空格是切换乐器快捷键
+256到364以及492到559是和弦设置，不需要和弦的话这部分可以删除
+394到426在干嘛，我还是不知道currentnum是要干嘛用
+MyMouseListener.java
+函数主要也是颜色变化和播放
+157到224也是和弦设置
+Music.java
+Note.java
+这两个是重点，明天重点搞一下
