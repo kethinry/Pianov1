@@ -89,7 +89,7 @@ public class MyPiano extends JFrame implements WindowListener, ActionListener {
 	boolean isPlaying=false;
 
 	public String pressForce, duration = "q", instrument = "0";
-	public String remember=new String("");//remember是用来记忆歌谱里面的信息
+	public String remember;//remember是用来记忆歌谱里面的信息
 	public String timeString="";//每个音符弹奏的相对时间字符串
 	public int channelNum, tone, colorNum,chooseIndex=2;
 	public Color myColor[] = { Color.red, Color.ORANGE, Color.YELLOW, Color.green, Color.pink, Color.BLUE,
@@ -114,31 +114,6 @@ public class MyPiano extends JFrame implements WindowListener, ActionListener {
 	boolean isTruePressed = false;
 	int currentNum = 0;//示教模式下的音符数量计数器，每次按对一个音符，就加一
 	int pressCount=0;//任意模式下的弹奏计数器，只要按下键盘，就加一
-	
-	public String getPressForce() {
-		return pressForce;
-	}
-
-	public void setPressForce(String pressForce) {
-		this.pressForce = pressForce;
-	}
-
-	public String getDuration() {
-		return duration;
-	}
-
-	public void setDuration(String duration) {
-		this.duration = duration;
-	}
-
-	public String getInstrument() {
-		return instrument;
-	}
-	
-
-	public void setInstrument(String instrument) {
-		this.instrument = instrument;
-	}
 
 	public MyPiano() throws MidiUnavailableException, IOException {
 		
@@ -486,9 +461,6 @@ public class MyPiano extends JFrame implements WindowListener, ActionListener {
 		return 0;
 	}
 
-	public int PressureMinor(int input) {
-		return 0;
-	}
 	public long transformDurationToTime(String durations,int pace,boolean isFudian) {
 		
 		pace=60000/pace;

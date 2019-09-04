@@ -9,7 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import javax.sound.midi.MidiUnavailableException;
-import javax.swing.JFileChooser;
+import javax.swing.*;
 
 public class PlayListener implements ActionListener {
 	MyPiano myPiano;
@@ -31,35 +31,25 @@ public class PlayListener implements ActionListener {
 		chooser.addChoosableFileFilter(new FileNameExtensionFilter("显示JPeg图片文件","jpg","jpeg"));
 		chooser.addChoosableFileFilter(new FileNameExtensionFilter("显示doc文件","doc","DOC"));*/
 		int ret=chooser.showOpenDialog(null);
-		
-		if(ret==JFileChooser.APPROVE_OPTION){//判断用户选择的是确定、取消等按钮
-			myPiano.refresh();
-			FileInputStream fin=null;
-			try {
-				fin=new FileInputStream(chooser.getSelectedFile().getPath());
-				FileReader fr=new FileReader(chooser.getSelectedFile().getPath());
-				BufferedReader br=new BufferedReader(fr);
-				String temp="";
-				
-				while((temp=br.readLine())!=null){
-					myPiano.remember+=(temp+"\r\n");
-				}
-				myPiano.txtOutput.setText(myPiano.remember);
-				myPiano.btnStart.setText("开始播放");
-				
-			} catch (FileNotFoundException e1) {
-				e1.printStackTrace();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}finally{
-				try {
-					fin.close();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
+		if(!myPiano.isPlaying) {
+			Music music=new Music(myPiano);
+			if(music.getMusicFromFile()){
+				music.play();
+				myPiano.isPlaying=true;
+			}
 
-			}		
 		}
+		else{
+			JOptionPane.showMessageDialog(null, "已有歌曲正在播放！");
+		}
+		/*
+
+		//如果不需要显示过滤的文件格式，下面3行可以不要
+		chooser.addChoosableFileFilter(new FileNameExtensionFilter("显示Gif图片文件","gif","GIF"));
+		chooser.addChoosableFileFilter(new FileNameExtensionFilter("显示JPeg图片文件","jpg","jpeg"));
+		chooser.addChoosableFileFilter(new FileNameExtensionFilter("显示doc文件","doc","DOC"));
+		int ret=chooser.showOpenDialog(null);
+*/
 	}
 
 }

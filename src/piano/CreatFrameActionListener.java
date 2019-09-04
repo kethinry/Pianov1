@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 
 public class CreatFrameActionListener implements ActionListener {
 	MyPiano myPiano;
-	CreatSettingFrame creatSettingFrame;
 	public CreatFrameActionListener(MyPiano myPiano){
 		this.myPiano=myPiano;
 	}

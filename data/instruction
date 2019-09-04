@@ -1,30 +1,111 @@
-这是一个说明文档，旨在说清楚每个函数的具体功能
+这是一个说明文档，旨在说清楚每个函数的具体功能，方便讨论更好重构代码以及优化功能时迅速找到涉及到的类和方法
+
 MyPiano.java
-public boolean isUpperLetter() {// 判断大写锁定是否打开
+public boolean isUpperLetter()
+判断大写锁定是否打开
 public synchronized int getChannel(int instrument)
-instrument的范围是什么意思？
 函数旨在每次更新音轨
 public String getString(int keyCode)
+通过键盘编码和已有设置构成可以play的note字符串
 这里全部用大小写锁定控制是否升半音
 wxpNote是五线谱功能需要的字符串参数，包括音符和音长
 note是使用play函数时需要的参数，包括音轨号，乐器，五线谱字符串
-numOfNote是什么？
+
 MyPanel.java
 设置主屏幕键盘按键的UI界面，包括鼠标监听
+
 MyKeyListener.java
 构造方法初始化是先将所有按钮释放
 public void keyPressed(KeyEvent arg0)
-按下键盘的各类响应事件，包括演奏（49行，74行），设置timestring，这个干嘛用？
+按下键盘的各类响应事件，包括演奏play（49行，74行），设置timestring，这个干嘛用？
 currentnum是啥？82行到底在干啥？
 输入不正确的那个文件在干啥，异常处理呢？sound1是啥，.play想干啥
 230到246行是音长快捷键，似乎是也可以直接扔了
 248到255在干啥我也不清楚，好像还是音高问题，但是没有设置下拉框
 ～是切换音高快捷键，空格是切换乐器快捷键
 256到364以及492到559是和弦设置，不需要和弦的话这部分可以删除
+public void keyReleased(KeyEvent e)
+对currentNum和isTruePressed的更新，以及键盘变化
 394到426在干嘛，我还是不知道currentnum是要干嘛用
+关于键的变化问题我觉得应该进行封装，再观察，如果只用了两次，而且非常固定不会修改，也可以暂时不封装
+
 MyMouseListener.java
 函数主要也是颜色变化和播放
 157到224也是和弦设置
-Music.java
+
 Note.java
-这两个是重点，明天重点搞一下
+这个类包括播放需要的各种基本信息，注意引入了music对象，可能每个对象是一个音符？
+playNote：先把音长通过字符串，节奏和是否浮点计算出一个整数值（35行）
+判断条件music对象的是否播放二维数组和开始时间，满足则挂起线程,挂起时间设置为beginTime
+40行用到了play，顺便更新了isPlayed二维数组，下面是琴键和键盘的显示
+下面是两个没有用到的函数，我删了
+
+Music.java
+这里音符和isPlay都是二维数组的原因是每个声部是一个一维数组
+看起来这个类的对象似乎是一整个乐谱，方法主要是形成乐谱和播放乐谱要用到的东西
+public boolean getMusicFromFile()    从文件中获得乐谱，主要是文件读取过程需要关注的还是beginTime
+记录基础音高的变量是standard，如果提供修改音高变量需要添加修改这个变量的方法
+public void saveAsFile()
+把乐谱保存成文件
+public void addNote(Note note,int index)
+增加一个的音符。这个是在CreatSettingTrame里面对乐谱录入的交互类里调用的
+public void play()
+播放这个乐谱对象，主要是线程的使用，调用创建播放线程和开始播放线程方法（以下两个）
+public void createPlayThread()
+创建播放线程，给每个声部的每个音符创建一个playModeThread对象，最后创建EndThread对象
+public void startPlayThread()
+将创建的每个音符的线程依次start
+public void pause()
+播放暂停,依次每个音符interrupt，endThread调stop，刷新myPiano，用循环找到每个声部的停止音符位置（这个没有库函数么？
+计算出每个音符的beginTime
+public void wake()
+播放继续，创建playModeThreads，调create和start
+public void stop()
+播放停止，每个音符的thread调stop，然后更新UI界面，endThread调interrupt，isPlaying设为false
+
+PlayModeThread.java
+构造需要myPiano和一个音符note
+public void run()
+调用note的playNote，打印五线谱的label
+
+PlayMode.java
+用到了myPiano里的remember
+构造器里在干嘛，，，？
+public void stopAllThreads()
+所有音符的线程interrupt，在startActionListener中用到，为了切换模式时强行停止
+public void readString(String fileString)
+从字符串切分出一个乐谱里的有效信息
+//我需要xhf给我捋一下不同的类里不同的线程的设计思路
+
+CreatSettingFrame.java
+用户自己录谱时用到的界面
+一个内部类 AddPart，这个对话框是点击新增伴奏的时候弹出的对话框，设置伴奏的音符数量、乐器
+一个内部类 CreatFrame，这个对话框是录入每一个音符的时候用的
+getString和getTime没有用到，删了
+还有相关按钮监听的内部类
+
+PlayListener.java
+我也不清楚之前的那一堆是在干嘛，反正也没啥效果，用OpenListener把这一部分覆盖了
+
+PianoPanel.java
+主要是琴键的面板UI和琴键有关编码。
+NewPianoCode数组，相当于将钢琴黑白键统一放到一个数组里，脚码与真实钢琴一一对应，脚码如果对应白键，脚码对应的newcode数组值为该白键在白键中的位置；脚码如果对应黑键，
+脚码对应的newcode数组值为52（白键个数）+黑键位置，位置均从0开始
+黑白键鼠标监听事件两个内部类里的方法
+public void mouseClicked(MouseEvent e)
+注意这里有play方法
+public void mousePressed(MouseEvent e)
+琴键的颜色变化
+public void mouseReleased(MouseEvent e)
+琴键的颜色变化
+黑键方法一样，没有颜色变化
+
+PlayPanel.java
+播放时显示的panel，主要是作者和歌曲名，和暂停播放，停止按钮监听事件
+
+EndThread.java
+需要一个music乐谱对象作为构造参数
+public void run()
+找到所有声部播放时间的最大值，执行线程休眠，然后music调stop（？
+
+

@@ -14,7 +14,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
 public class Music {
-	WuXianPu wuXianPu;
+
 	String title;// 乐谱的标题
 	String author;// 乐谱的作者
 	String date;// 乐谱的创作时间

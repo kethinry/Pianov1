@@ -13,7 +13,6 @@ public class Note {
 	int octave;// 第几个八度取值 -5..5
 	int tone;// 音阶调，7个音 1..7
 	int character; // 数字 1..127
-	int halfNum; // 升半音数目 可负
 	int instrument;
 	int index;// 表示这个音符在第几个part里
 	long durationInt;// 拖延的时间数字表示，例如2000毫秒
@@ -29,15 +28,6 @@ public class Note {
 		this.index = index;
 		this.instrument = instrument;
 		this.num = num;
-	}
-
-	public String getNoteString(Note note, int channelNum, int instrument) {// 得到形如V0
-																			// I0
-																			// 60q的语句
-		// 这个函数不一定用到
-		String noteString = "";
-		return noteString;
-		// 得到形如V0 I0 60q的语句
 	}
 
 	public void playNote() throws InterruptedException, MidiUnavailableException {// 播放这个音符
@@ -114,31 +104,4 @@ public class Note {
 		}
 	}
 
-	public int getCharacter(int tone, int octave) {
-		int character;
-		character = (5 + octave) * 12 + transformTone(tone);
-		return character;
-	}
-
-	public int transformTone(int tone) {
-		switch (tone) {
-		case 1:
-			return 0;
-		case 2:
-			return 2;
-		case 3:
-			return 4;
-		case 4:
-			return 5;
-		case 5:
-			return 7;
-		case 6:
-			return 9;
-		case 7:
-			return 11;
-		default:
-			return 0;
-
-		}
-	}
 }
