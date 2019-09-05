@@ -41,60 +41,28 @@ public class Note {
 				music.isPlayed[index][num - 1] = true;
 				int i = PianoPanel.transformCharaterToWhitePianoCode(character);
 
-				if (i != -1) {
-					if (i == 0)
-						myPiano.btnPianoWhite[i].setIcon(new ImageIcon("image/0.jpg"));
-					else if (i == 1)
-						myPiano.btnPianoWhite[i].setIcon(new ImageIcon("image/7.jpg"));
-					else {
-						switch ((i - 2) % 7) {
-						case 0:
-							myPiano.btnPianoWhite[i].setIcon(new ImageIcon("image/1.jpg"));
-							break;
-						case 1:
-							myPiano.btnPianoWhite[i].setIcon(new ImageIcon("image/2.jpg"));
-							break;
-						case 2:
-							myPiano.btnPianoWhite[i].setIcon(new ImageIcon("image/3.jpg"));
-							break;
-						case 3:
-							myPiano.btnPianoWhite[i].setIcon(new ImageIcon("image/4.jpg"));
-							break;
-						case 4:
-							myPiano.btnPianoWhite[i].setIcon(new ImageIcon("image/5.jpg"));
-							break;
-						case 5:
-							myPiano.btnPianoWhite[i].setIcon(new ImageIcon("image/6.jpg"));
-							break;
-						case 6:
-							myPiano.btnPianoWhite[i].setIcon(new ImageIcon("image/7.jpg"));
-							break;
-						default:
+				myPiano.settingwhitekey(i);
+
+				KeyProperty key = myPiano.km.findByCharacter(character);
+				if(key!=null) {
+					int userButton = key.getIndex();
+					if (userButton >= 0 && userButton < 60) {
+						myPiano.setkeycolor(userButton, 2);
+						Thread.sleep(durationInt);
+						myPiano.setkeycolor(userButton, 5);
+						if (i != -1) {
 							myPiano.btnPianoWhite[i].setIcon(null);
-							break;
 						}
 
+					} else {
+						if (i != -1) {
+							Thread.sleep(durationInt);
+							myPiano.btnPianoWhite[i].setIcon(null);
+						}
 					}
 				}
-				if (myPiano.transformKeyCodeToButtonCode(myPiano.transformCharacterToKeyCode(character)) >= 0
-						&& myPiano.transformKeyCodeToButtonCode(myPiano.transformCharacterToKeyCode(character)) < 127) {
-					myPiano.btn[myPiano.transformKeyCodeToButtonCode(myPiano.transformCharacterToKeyCode(character))]
-							.setBackground(Color.GREEN);
-					myPiano.btn[myPiano.transformDurationToButtonCode(durationString)].setBackground(myPiano.myGay);
-					Thread.sleep(durationInt);
-					myPiano.btn[myPiano.transformKeyCodeToButtonCode(myPiano.transformCharacterToKeyCode(character))]
-							.setBackground(Color.WHITE);
-					myPiano.btn[myPiano.transformDurationToButtonCode(durationString)].setBackground(Color.WHITE);
-					
-					if (i != -1) {
-						myPiano.btnPianoWhite[i].setIcon(null);
-					}
-				
-				}else{
-					if (i != -1) {
-						Thread.sleep(durationInt);
-						myPiano.btnPianoWhite[i].setIcon(null);
-					}
+				else{
+
 				}
 			} else {
 

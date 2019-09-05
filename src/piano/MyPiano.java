@@ -32,10 +32,6 @@ public class MyPiano extends JFrame implements WindowListener, ActionListener {
 	JPanel pUp = new JPanel();
 	JPanel pLyrics = new JPanel();
 	JPanel pMenu = new JPanel();
-	JPanel pKey1 = new JPanel();
-	JPanel pKey2 = new JPanel();
-	JPanel pKey3 = new JPanel();
-	JPanel pKey4 = new JPanel();
 	JPanel pControl = new JPanel();
 	JPanel pPiano = new JPanel();
 	MyPanel pKey;
@@ -114,6 +110,7 @@ public class MyPiano extends JFrame implements WindowListener, ActionListener {
 	boolean isTruePressed = false;
 	int currentNum = 0;//示教模式下的音符数量计数器，每次按对一个音符，就加一
 	int pressCount=0;//任意模式下的弹奏计数器，只要按下键盘，就加一
+	KeyManager km = new KeyManager(1);//每个键盘键的各类属性
 
 	public MyPiano() throws MidiUnavailableException, IOException {
 		
@@ -487,74 +484,7 @@ public class MyPiano extends JFrame implements WindowListener, ActionListener {
 			return 500;
 		}
 	}
-
-	public int transformButtonCodeToKeyCode(int i) {// 按钮数组的序号转化成键盘的编码
-		if (i >= 1 && i <= 9)
-			return 48 + i;
-		if (i == 10)
-			return 48;
-		if ((i >= 0 && i <= 14) || (i >= 25 && i <= 28) || (i >= 38 && i <= 41) || (i >= 49 && i <= 52))
-			return -1;
-		else {
-			switch (i) {
-			case 15:
-				return 113;
-			case 16:
-				return 119;
-			case 17:
-				return 101;
-			case 18:
-				return 114;
-			case 19:
-				return 116;
-			case 20:
-				return 121;
-			case 21:
-				return 117;
-			case 22:
-				return 105;
-			case 23:
-				return 111;
-			case 24:
-				return 112;
-			case 29:
-				return 97;
-			case 30:
-				return 115;
-			case 31:
-				return 100;
-			case 32:
-				return 102;
-			case 33:
-				return 103;
-			case 34:
-				return 104;
-			case 35:
-				return 106;
-			case 36:
-				return 107;
-			case 37:
-				return 108;
-			case 42:
-				return 122;
-			case 43:
-				return 120;
-			case 44:
-				return 99;
-			case 45:
-				return 118;
-			case 46:
-				return 98;
-			case 47:
-				return 110;
-			case 48:
-				return 109;
-			default:
-				return -1;
-			}
-
-		}
-	}
+	//下面这个函数按理说取消切换音长快捷键之后应该没有用了，但是第一个用的地方貌似跟是否是最后一个音符有关，没太明白
 	public int transformDurationToButtonCode(String durations) {
 		switch (durations) {
 		case "w":
@@ -578,283 +508,6 @@ public class MyPiano extends JFrame implements WindowListener, ActionListener {
 		}
 	}
 
-	public int transformKeyCodeToButtonCode(int i) {
-		if (i >= 49 && i <= 58)//数字键，返回1-10
-			return i - 48;
-		if (i == 48)
-			return i - 38;
-		else {//英文字母
-			switch (i + 32) {
-			case 224:
-				return 0;
-			case 77:
-				return 11;
-			case 93:
-				return 12;
-			case 40:
-				return 13;
-			case 41:
-				return 14;
-			case 123:
-				return 25;
-			case 125:
-				return 26;
-			case 124:
-				return 27;
-			case 52:
-				return 28;
-			case 91:
-				return 38;
-			case 254:
-				return 39;
-			case 122:
-				return 42;
-			case 45:
-				return 40;
-			case 48:
-				return 41;
-			case 76:
-				return 49;
-			case 78:
-				return 50;
-			case 79:
-				return 51;
-			case 49:
-				return 53;
-			case 294:
-				return 54;
-			case 64:
-				return 55;
-			case 80:
-				return 10;
-			case 113:
-				return 15;
-			case 119:
-				return 16;
-			case 101:
-				return 17;
-			case 114:
-				return 18;
-			case 116:
-				return 19;
-			case 121:
-				return 20;
-			case 117:
-				return 21;
-			case 105:
-				return 22;
-			case 111:
-				return 23;
-			case 112:
-				return 24;
-			case 97:
-				return 29;
-			case 115:
-				return 30;
-			case 100:
-				return 31;
-			case 102:
-				return 32;
-			case 103:
-				return 33;
-			case 104:
-				return 34;
-			case 106:
-				return 35;
-			case 107:
-				return 36;
-			case 108:
-				return 37;
-			case 120:
-				return 43;
-			case 99:
-				return 44;
-			case 118:
-				return 45;
-			case 98:
-				return 46;
-			case 110:
-				return 47;
-			case 109:
-				return 48;
-			case 42:
-				return 40;
-			default:
-				return -1;
-			}
-
-		}
-
-	}
-
-	public int transformKeyCodeToCharacter(int keyCode) {// 把键盘编码转化成音调高低表示码
-		if (keyCode <= 64 || keyCode >= 91)
-			if (isBothPlay == true) {// 启用数字键盘模式
-				keyCode -= 48;
-				switch (keyCode) {
-				case 1:
-					return 84;
-				case 2:
-					return 86;
-				case 3:
-					return 88;
-				case 4:
-					return 89;
-				case 5:
-					return 91;
-				case 6:
-					return 93;
-				case 7:
-					return 95;
-				case 8:
-					return 96;
-				case 9:
-					return 98;
-				case 0:
-					return 100;
-				default:
-					return -1;
-				}
-			} else {
-				return -1;
-			}
-		else {
-			keyCode += 32;
-			switch (keyCode) {
-			case 97:
-				return 60;// a
-			case 98:
-				return 55;// b
-			case 99:
-				return 52;// c
-			case 100:
-				return 64;// d
-			case 101:
-				return 76;// e
-			case 102:
-				return 65;// f
-			case 103:
-				return 67;// g
-			case 104:
-				return 69;// h
-			case 105:
-				return 84;// i
-			case 106:
-				return 71;// j
-			case 107:
-				return 72;// k
-			case 108:
-				return 74;// l
-			case 109:
-				return 59;// m
-			case 110:
-				return 57;// n
-			case 111:
-				return 86;// o
-			case 112:
-				return 88;// p
-			case 113:
-				return 72;// q
-			case 114:
-				return 77;// r
-			case 115:
-				return 62;// s
-			case 116:
-				return 79;// t
-			case 117:
-				return 83;// u
-			case 118:
-				return 53;// v
-			case 119:
-				return 74;// w
-			case 120:
-				return 50;// x
-			case 121:
-				return 81;// y
-			case 122:
-				return 48;// z
-			default:
-				return -1;
-			}
-		}
-	}
-
-	public int transformCharacterToKeyCode(int character) {// 把音调高低表示码转化成键盘编码
-		switch (character) {
-		case 89: case 90:
-			return 52;
-		case 91:case 92:
-			return 53;
-		case 93:case 94:
-			return 54;
-		case 95:
-			return 55;
-		case 96:case 97:
-			return 56;
-		case 98:case 99:
-			return 57;
-		case 100:case 101:
-			return 48;
-
-		case 60 :case 61:
-			return 65;// a
-		case 55: case 56:
-			return 66;// b
-		case 52:
-			return 67;// c
-		case 64:
-			return 68;// d
-		case 76:
-			return 69;// e
-		case 65:case 66:
-			return 70;// f
-		case 67:case 68:
-			return 71;// g
-		case 69:case 70:
-			return 72;// h
-		case 84:case 85:
-			return 73;// i
-		case 71:
-			return 74;// j
-		// case 72:
-		// return 75;// k
-		// case 74:
-		// return 76;// l
-		case 59:
-			return 77;// m
-		case 57:case 58:
-			return 78;// n
-		case 86:case 87:
-			return 79;// o
-		case 88:
-			return 80;// p
-		case 72:case 73:
-			return 81;// q
-		case 77:case 78:
-			return 82;// r
-		case 62:case 63:
-			return 83;// s
-		case 79:case 80:
-			return 84;// t
-		case 83:
-			return 85;// u
-		case 53:case 54:
-			return 86;// v
-		case 74:case 75:
-			return 87;// w
-		case 50:case 51:
-			return 88;// x
-		case 81:case 82:
-			return 89;// y
-		case 48:case 49:
-			return 90;// z
-		default:
-			return -1;
-		}
-	}
-
-	
-
 	public boolean isUpperLetter() {// 判断大写锁定是否打开
 		Toolkit.getDefaultToolkit().setDynamicLayout(false);
 		return Toolkit.getDefaultToolkit().getLockingKeyState(KeyEvent.VK_CAPS_LOCK);
@@ -871,18 +524,89 @@ public class MyPiano extends JFrame implements WindowListener, ActionListener {
 	}
 	public String getString(int keyCode) {// 通过键盘编码和已有设置构成可以play的note字符串
 		String note = "",wxpNote="";
-		keyCode = transformKeyCodeToCharacter(keyCode);
-		if (keyCode == -1)
+		KeyProperty key = km.findByCode(keyCode);
+		int character = key.getCharacter();
+		if (character == -1)
 			return note;
 		if (isUpperLetter())
-			keyCode++;
-		wxpNote=String.valueOf(keyCode) + duration;
+			character++;
+		wxpNote=String.valueOf(character) + duration;
 		lblWuXianPu.addNote(wxpNote);
 		note = "V" + String.valueOf(getChannel(transformInstrument(jbxSetInstrument.getSelectedIndex()))) + " " + instrument + " " + wxpNote + " ";
 		numOfNote++;
 		//txtOutput.setText(txtOutput.getText() + note + " ");
 		
 		return note;
+	}
+	public void settingwhitekey(int whitecode){
+		if (whitecode!=-1) {
+			if (whitecode == 0)
+				btnPianoWhite[whitecode].setIcon(new ImageIcon("image/0.jpg"));
+			else if (whitecode == 1)
+				btnPianoWhite[whitecode].setIcon(new ImageIcon("image/7.jpg"));
+			switch ((whitecode - 2) % 7) {
+				case 0:
+					btnPianoWhite[whitecode].setIcon(new ImageIcon("image/1.jpg"));break;
+				case 1:
+					btnPianoWhite[whitecode].setIcon(new ImageIcon("image/2.jpg"));break;
+				case 2:
+					btnPianoWhite[whitecode].setIcon(new ImageIcon("image/3.jpg"));break;
+				case 3:
+					btnPianoWhite[whitecode].setIcon(new ImageIcon("image/4.jpg"));break;
+				case 4:
+					btnPianoWhite[whitecode].setIcon(new ImageIcon("image/5.jpg"));break;
+				case 5:
+					btnPianoWhite[whitecode].setIcon(new ImageIcon("image/6.jpg"));break;
+				case 6:
+					btnPianoWhite[whitecode].setIcon(new ImageIcon("image/7.jpg"));break;
+				default:
+					btnPianoWhite[whitecode].setIcon(null);break;
+			}
+		}
+	}
+	public void setkeycolor(int btni,int mode){
+		switch(mode) {
+			case 1:
+				if (!isColorful) {// 黑白键盘模式
+					btn[btni].setBackground(Color.BLACK);
+					if (btni == 41) //41键是shift，另一边52也要显示
+						btn[btni].setBackground(Color.BLACK);
+					if (btni == 53) //53和57都是ctrl
+						btn[57].setBackground(Color.BLACK);
+				} else {// 多彩键盘模式
+					if (colorNum >= 6)
+						colorNum = 0;
+					if (btni != -1)
+						btn[btni].setBackground(myColor[colorNum]);
+					if (btni == 41)
+						btn[52].setBackground(myColor[colorNum]);
+					if (btni == 53)
+						btn[57].setBackground(myColor[colorNum]);
+					colorNum++;
+				}break;
+			case 2:
+				btn[btni].setBackground(Color.GREEN);
+				if (btni == 41)
+					btn[52].setBackground(Color.GREEN);
+				if (btni == 53)
+					btn[57].setBackground(Color.GREEN);
+				break;
+			case 3:
+				btn[btni].setBackground(Color.RED);
+			case 4:
+				btn[btni].setBackground(myPink);
+				if (btni == 41)
+					btn[52].setBackground(myPink);
+				if (btni == 53)
+					btn[57].setBackground(myPink);
+			case 5:
+				btn[btni].setBackground(Color.WHITE);
+				if (btni == 41)
+					btn[52].setBackground(Color.WHITE);
+				if (btni == 53)
+					btn[57].setBackground(Color.WHITE);
+				break;
+		}
 	}
 
 	public void windowActivated(WindowEvent arg0) {

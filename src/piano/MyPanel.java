@@ -42,7 +42,8 @@ class MyPanel extends JPanel {
 		for (int i = 1; i <= 9; i++)
 			myPiano.btn[i].setText(String.valueOf(i));
 		for (int i = 14; i <= 53; i++) {
-			myPiano.btn[i].setText(String.valueOf((char) (myPiano.transformButtonCodeToKeyCode(i) - 32)));
+			KeyProperty key = myPiano.km.findByIndex(i);
+			myPiano.btn[i].setText(String.valueOf((char) (key.getKeycode() )));
 		}
 		myPiano.btn[0].setText("~");
 		myPiano.btn[10].setText("0");

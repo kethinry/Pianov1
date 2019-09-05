@@ -29,8 +29,8 @@ public class PlayModeColorThread extends Thread {
 		while (playMode.on && !done) {
 			
 			int character = Integer.valueOf(noteOnlyNum);
-			int keyCode = myPiano.transformCharacterToKeyCode(character);
-			int buttonCode = myPiano.transformKeyCodeToButtonCode(keyCode);
+			KeyProperty key = myPiano.km.findByCharacter(character);
+			int buttonCode = key.getIndex();
 			
 			try {
 				Thread.sleep(time);

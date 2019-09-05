@@ -102,7 +102,6 @@ public void mouseReleased(MouseEvent e)
 
 PlayPanel.java
 播放时显示的panel，主要是作者和歌曲名，和暂停播放，停止按钮监听事件
-
 EndThread.java
 需要一个music乐谱对象作为构造参数
 public void run()

@@ -17,7 +17,7 @@ class PianoPanel extends JPanel {
 	RealtimePlayer player;
 	JPanel mainPanel = new JPanel();
 	
-	int NewPianoCode[] = new int[88];
+	int NewPianoCode[] = new int[88];	//NewPianoCode+21恰好是Character
 
 	public int transformWhitePianoCodeToNewPianoCode(int num) {
 		for (int i = 0; i < 88; i++)
@@ -124,33 +124,18 @@ class PianoPanel extends JPanel {
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			player.play("V2 I0 " + String.valueOf(transformWhitePianoCodeToNewPianoCode(i) + 21) + "q");
-			myPiano.txtOutput.setText(myPiano.txtOutput.getText() + "V2 I0 "
-					+ String.valueOf(transformWhitePianoCodeToNewPianoCode(i) + 21) + "q");
+			int character = transformWhitePianoCodeToNewPianoCode(i) + 21;
+			player.play("V2 I0 " + String.valueOf(character) + "q");
+			myPiano.txtOutput.setText(myPiano.txtOutput.getText() + "V2 I0 " + String.valueOf(character) + "q");
 		}// 钢琴白键的点击事件
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			if(i==0)
-				myPiano.btnPianoWhite[i].setIcon(new ImageIcon("image/0.jpg"));
-			else if(i==1)
-			    myPiano.btnPianoWhite[i].setIcon(new ImageIcon("image/7.jpg"));
-			else{
-				switch((i-2)%7){
-				case 0:myPiano.btnPianoWhite[i].setIcon(new ImageIcon("image/1.jpg"));break;
-				case 1:myPiano.btnPianoWhite[i].setIcon(new ImageIcon("image/2.jpg"));break;
-				case 2:myPiano.btnPianoWhite[i].setIcon(new ImageIcon("image/3.jpg"));break;
-				case 3:myPiano.btnPianoWhite[i].setIcon(new ImageIcon("image/4.jpg"));break;
-				case 4:myPiano.btnPianoWhite[i].setIcon(new ImageIcon("image/5.jpg"));break;
-				case 5:myPiano.btnPianoWhite[i].setIcon(new ImageIcon("image/6.jpg"));break;
-				case 6:myPiano.btnPianoWhite[i].setIcon(new ImageIcon("image/7.jpg"));break;
-				default:myPiano.btnPianoWhite[i].setIcon(null);break;
-				}
-			
-			}
-			
-			int keyCode = myPiano.transformCharacterToKeyCode(transformWhitePianoCodeToNewPianoCode(i)+21);
-			int btnCode = myPiano.transformKeyCodeToButtonCode(keyCode);
+			myPiano.settingwhitekey(i);
+			int character = transformWhitePianoCodeToNewPianoCode(i) + 21;
+			KeyProperty key = myPiano.km.findByCharacter(character);
+			int btnCode = key.getIndex();
+
 			if (!myPiano.isColorful)
 				myPiano.btn[btnCode].setBackground(Color.BLACK);
 			else {
@@ -165,8 +150,9 @@ class PianoPanel extends JPanel {
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			int keyCode = myPiano.transformCharacterToKeyCode(transformWhitePianoCodeToNewPianoCode(i)+21);
-			int btnCode = myPiano.transformKeyCodeToButtonCode(keyCode);
+			int character = transformWhitePianoCodeToNewPianoCode(i) + 21;
+			KeyProperty key = myPiano.km.findByCharacter(character);
+			int btnCode = key.getIndex();
 			myPiano.btnPianoWhite[i].setIcon(null);
 			if(btnCode>=0)myPiano.btn[btnCode].setBackground(Color.WHITE);
 			// TODO Auto-generated method stub
@@ -195,9 +181,9 @@ class PianoPanel extends JPanel {
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			player.play("V2 I0 " + String.valueOf(transformBlackPianoCodeToNewPianoCode(i) + 21) + "q");
-			myPiano.txtOutput.setText(myPiano.txtOutput.getText() + "V2 I0 "
-					+ String.valueOf(transformBlackPianoCodeToNewPianoCode(i) + 21) + "q ");
+			int character = transformBlackPianoCodeToNewPianoCode(i) + 21;
+			player.play("V2 I0 " + String.valueOf(character) + "q");
+			myPiano.txtOutput.setText(myPiano.txtOutput.getText() + "V2 I0 " + String.valueOf(character) + "q ");
 		}// 钢琴白键的点击事件
 
 		@Override

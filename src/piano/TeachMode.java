@@ -36,8 +36,9 @@ class TeachMode {
 			myPiano.subArrayOnlyNum[i] = myPiano.subArray[i].replaceFirst("I\\d+" + " ", "");
 			myPiano.subArrayOnlyNum[i] = myPiano.subArrayOnlyNum[i].replaceFirst("[a-zA-Z]", "");
 			myPiano.character[i] = Integer.valueOf(myPiano.subArrayOnlyNum[i]);
-			myPiano.keyCode[i] = myPiano.transformCharacterToKeyCode(myPiano.character[i]);
-			myPiano.buttonCode[i] = myPiano.transformKeyCodeToButtonCode(myPiano.keyCode[i]);
+			KeyProperty key = myPiano.km.findByCharacter(myPiano.character[i]);
+			myPiano.keyCode[i] = key.getKeycode();
+			myPiano.buttonCode[i] = key.getIndex();
 			myPiano.durations[i] = myPiano.subArray[i].replaceFirst("I\\d+ \\d+", "");
 		}
 		// 先将第一个音符变成待教模式 之后交给KeyListener
