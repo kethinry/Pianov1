@@ -21,20 +21,22 @@ import java.net.MalformedURLException;
 
 public class MyKeyListener implements KeyListener {
 	MyPiano myPiano;
-	boolean isReleased[];
+	int isReleased[];
 	public MyKeyListener(MyPiano myPiano) {
 		this.myPiano = myPiano;
-		isReleased = new boolean[129];
-		for(int i=0;i<=128;i++)isReleased[i]=true;//所有按钮都 被释放
+		isReleased = new int[129];
+		for(int i=0;i<=128;i++)isReleased[i]=-1;//所有按钮都 被释放
 	}
 
 	public void keyPressed(KeyEvent arg0) {
 		int a = arg0.getKeyCode();
 		if(a>128)return;
+
 		KeyProperty key = myPiano.km.findByCode(a);
 		int userCharacter = key.getCharacter();
 		int userButton = key.getIndex();
-		if(isReleased[a]){
+		if(isReleased[a] < 0){
+			isReleased[a] = myPiano.getChannel(myPiano.transformInstrument(myPiano.jbxSetInstrument.getSelectedIndex()));
 			long t = System.currentTimeMillis() - myPiano.beginTime;//当前时间减去按下开始演奏的时间
 			if (userCharacter > 0) {
 				myPiano.timeString = myPiano.timeString + String.valueOf(t) + " ";
@@ -47,7 +49,7 @@ public class MyKeyListener implements KeyListener {
 			switch (myPiano.mode) {  //不同模式，按下键盘的色彩不同
 			case 0://自由演奏
 			case 2://乐谱记录
-				myPiano.player.play(myPiano.getString(a));
+				myPiano.streamingPlayer.stream(myPiano.getStreamString(true,a,isReleased[a]));
 				myPiano.setkeycolor(userButton,1);
 				break;
 
@@ -101,7 +103,7 @@ public class MyKeyListener implements KeyListener {
 			}
 
 		}
-		isReleased[a]=false;
+
 
 	}
 
@@ -111,11 +113,12 @@ public class MyKeyListener implements KeyListener {
 	public void keyReleased(KeyEvent e) {
 		int a = e.getKeyCode();
 		if (a > 128) return;
+		myPiano.streamingPlayer.stream(myPiano.getStreamString(false,a,isReleased[a]));
 		KeyProperty key = myPiano.km.findByCode(a);
 		int userCharacter = key.getCharacter();
 		int userButton = key.getIndex();
 		int whitecode = key.getWhitecode();
-		isReleased[a] = true;
+		isReleased[a] = -1;
 		if (myPiano.mode == 1) {
 			if (myPiano.isUpperLetter())
 				userCharacter += 1;

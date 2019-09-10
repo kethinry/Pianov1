@@ -13,6 +13,7 @@ import javax.swing.*;
 import org.jfugue.pattern.Pattern;
 import org.jfugue.player.Player;
 import org.jfugue.realtime.RealtimePlayer;
+import org.jfugue.StreamingPlayer;
 
 import com.jgoodies.looks.Fonts;
 import com.jtattoo.plaf.smart.SmartLookAndFeel;
@@ -28,6 +29,7 @@ public class MyPiano extends JFrame implements WindowListener, ActionListener {
 	JButton btnPianoWhite[];
 	JButton btnPianoBlack[];
 	RealtimePlayer player;
+	StreamingPlayer streamingPlayer ;
 	JFrame f = new JFrame("键盘音乐派对");
 	JLabel background;
 	JFrame fAdvancedSettings = new JFrame("高级设置");
@@ -116,7 +118,7 @@ public class MyPiano extends JFrame implements WindowListener, ActionListener {
 
 	public MyPiano() throws MidiUnavailableException, IOException {
 		
-		
+		streamingPlayer = new StreamingPlayer();
 		player = new RealtimePlayer();
 		btn = new JButton[128];
 		for (int i = 0; i < 127; i++) {
@@ -536,10 +538,32 @@ public class MyPiano extends JFrame implements WindowListener, ActionListener {
 		lblWuXianPu.addNote(wxpNote);
 		note = "V" + String.valueOf(getChannel(transformInstrument(jbxSetInstrument.getSelectedIndex()))) + " " + instrument + " " + wxpNote + " ";
 		numOfNote++;
-		//txtOutput.setText(txtOutput.getText() + note + " ");
+		//System.out.println("note="+note);
 		
 		return note;
 	}
+
+	public String getStreamString(boolean isPress,int keyCode,int channel) {// 通过键盘编码和已有设置构成可以play的note字符串
+		String note = "",wxpNote="";
+		KeyProperty key = km.findByCode(keyCode);
+		String newcharacter = key.getNewcharacter();
+		int character = key.getCharacter();
+		//System.out.println("newcharacter="+newcharacter);
+		if (newcharacter == "n")
+			return "";
+		/*if (isUpperLetter())
+			character++;*/
+		wxpNote=String.valueOf(character) + duration;
+		lblWuXianPu.addNote(wxpNote);
+		if(isPress)note = "V" + String.valueOf(channel) + " " + instrument + " " + newcharacter + "o- ";
+		else note = "V" + String.valueOf(channel) + " " + instrument + " " + newcharacter + "-o ";
+		numOfNote++;
+		//System.out.println("note="+note);
+
+		return note;
+	}
+
+
 	public void settingwhitekey(int whitecode){
 		if (whitecode>=0&&whitecode<52) {
 			if (whitecode == 0)
