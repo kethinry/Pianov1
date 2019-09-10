@@ -47,20 +47,23 @@ public class KeyManager {
         if(code2keys.containsKey(code))
             return code2keys.get(code);
         System.out.println("No exsist key with input keycode!");
-        return null;
+        KeyProperty errorkey = new KeyProperty(-1,"-1,-1,-1,-1,n");
+        return errorkey;
 
     }
     public KeyProperty findByIndex(int index){
         if(index<=index2keys.size())
             return index2keys.get(index);
         System.out.println("No exsist key with input index!");
-        return null;
+        KeyProperty errorkey = new KeyProperty(-1,"-1,-1,-1,-1,n");
+        return errorkey;
     }
     public KeyProperty findByCharacter(int character){
         if(character2keys.containsKey(character))
         return character2keys.get(character);
         System.out.println("No exsist key with input character!");
-        return null;
+        KeyProperty errorkey = new KeyProperty(-1,"-1,-1,-1,-1,n");
+        return errorkey;
     }
     //KeyProperty key = keyManager.findByCode(123);
 }

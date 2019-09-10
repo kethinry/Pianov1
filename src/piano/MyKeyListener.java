@@ -21,11 +21,11 @@ import java.net.MalformedURLException;
 
 public class MyKeyListener implements KeyListener {
 	MyPiano myPiano;
-	int isReleased[];
+	int noteChannel[];//按下键盘时存储每个音的音轨
 	public MyKeyListener(MyPiano myPiano) {
 		this.myPiano = myPiano;
-		isReleased = new int[129];
-		for(int i=0;i<=128;i++)isReleased[i]=-1;//所有按钮都 被释放
+		noteChannel = new int[129];
+		for(int i=0;i<=128;i++)noteChannel[i]=-1;//所有按钮都 被释放
 	}
 
 	public void keyPressed(KeyEvent arg0) {
@@ -35,8 +35,8 @@ public class MyKeyListener implements KeyListener {
 		KeyProperty key = myPiano.km.findByCode(a);
 		int userCharacter = key.getCharacter();
 		int userButton = key.getIndex();
-		if(isReleased[a] < 0){
-			isReleased[a] = myPiano.getChannel(myPiano.transformInstrument(myPiano.jbxSetInstrument.getSelectedIndex()));
+		if(noteChannel[a] < 0){
+			noteChannel[a] = myPiano.getChannel(myPiano.transformInstrument(myPiano.jbxSetInstrument.getSelectedIndex()));
 			long t = System.currentTimeMillis() - myPiano.beginTime;//当前时间减去按下开始演奏的时间
 			if (userCharacter > 0) {
 				myPiano.timeString = myPiano.timeString + String.valueOf(t) + " ";
@@ -49,14 +49,15 @@ public class MyKeyListener implements KeyListener {
 			switch (myPiano.mode) {  //不同模式，按下键盘的色彩不同
 			case 0://自由演奏
 			case 2://乐谱记录
-				myPiano.streamingPlayer.stream(myPiano.getStreamString(true,a,isReleased[a]));
+				myPiano.streamingPlayer.stream(myPiano.getStreamString(true,a,noteChannel[a]));
 				myPiano.setkeycolor(userButton,1);
 				break;
 
 			case 1://教学模式
 				if (myPiano.currentNum < myPiano.numOfNote) {
 					if (userCharacter == myPiano.character[myPiano.currentNum]) { // 输入正确
-						myPiano.player.play(myPiano.getString(a));
+						myPiano.streamingPlayer.stream(myPiano.getStreamString(true,a,noteChannel[a]));
+						//myPiano.player.play(myPiano.getString(a));
 						myPiano.setkeycolor(userButton,2);
 						if (myPiano.currentNum == myPiano.numOfNote - 1
 								|| myPiano.transformDurationToButtonCode(myPiano.durations[myPiano.currentNum]) != myPiano
@@ -113,16 +114,18 @@ public class MyKeyListener implements KeyListener {
 	public void keyReleased(KeyEvent e) {
 		int a = e.getKeyCode();
 		if (a > 128) return;
-		myPiano.streamingPlayer.stream(myPiano.getStreamString(false,a,isReleased[a]));
+		if(myPiano.mode==0||myPiano.mode==2)
+			myPiano.streamingPlayer.stream(myPiano.getStreamString(false,a,noteChannel[a]));
 		KeyProperty key = myPiano.km.findByCode(a);
 		int userCharacter = key.getCharacter();
 		int userButton = key.getIndex();
 		int whitecode = key.getWhitecode();
-		isReleased[a] = -1;
+
 		if (myPiano.mode == 1) {
 			if (myPiano.isUpperLetter())
 				userCharacter += 1;
 			if (myPiano.currentNum < myPiano.numOfNote && userCharacter == myPiano.character[myPiano.currentNum]) {
+				myPiano.streamingPlayer.stream(myPiano.getStreamString(false,a,noteChannel[a]));
 				myPiano.currentNum++;
 				myPiano.isTruePressed = true;
 			}
@@ -218,5 +221,6 @@ public class MyKeyListener implements KeyListener {
 
 		if(whitecode<52&&whitecode>=0)
 		myPiano.btnPianoWhite[whitecode].setIcon(null);
+		noteChannel[a] = -1;
 	}
 }

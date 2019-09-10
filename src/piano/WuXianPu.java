@@ -223,7 +223,7 @@ public class WuXianPu extends JLabel {
 			
 		} else {
 			//System.out.println("keystring[0]="+keyString[0]);
-			//System.out.println("scorestring="+scoreString);
+			// System.out.println("scorestring="+scoreString);
 			keyString[0] = getKey(scoreString);
 
 			bitString[0] = getBit(scoreString);

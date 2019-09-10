@@ -27,7 +27,7 @@ class MyMouseListener implements MouseListener {
 		int keyCode = key.getKeycode();
 		if (keyCode >= 97 && keyCode <= 122) {
 			a = keyCode - 32;
-			myPiano.player.play(myPiano.getString(a));
+			myPiano. player.play(myPiano.getString(a));
 		}
 		if (keyCode >= 48 && keyCode <= 58) {
 			a = keyCode;
