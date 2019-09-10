@@ -46,20 +46,20 @@ public class KeyManager {
     public KeyProperty findByCode(int code){
         if(code2keys.containsKey(code))
             return code2keys.get(code);
-        System.out.println("No exsist!");
+        System.out.println("No exsist key with input keycode!");
         return null;
 
     }
     public KeyProperty findByIndex(int index){
         if(index<=index2keys.size())
             return index2keys.get(index);
-        System.out.println("No exsist!");
+        System.out.println("No exsist key with input index!");
         return null;
     }
     public KeyProperty findByCharacter(int character){
         if(character2keys.containsKey(character))
         return character2keys.get(character);
-        System.out.println("No exsist!");
+        System.out.println("No exsist key with input character!");
         return null;
     }
     //KeyProperty key = keyManager.findByCode(123);

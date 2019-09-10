@@ -22,6 +22,8 @@ import com.jtattoo.plaf.smart.SmartLookAndFeel;
 
 public class MyPiano extends JFrame implements WindowListener, ActionListener {
 	private static final long serialVersionUID = -1907889725234272213L;
+	public static final int VoiceRangeLow = 48;
+	public static final int VoiceRangeHigh = 95;
 	public JButton[] btn;
 	JButton btnPianoWhite[];
 	JButton btnPianoBlack[];
@@ -539,7 +541,7 @@ public class MyPiano extends JFrame implements WindowListener, ActionListener {
 		return note;
 	}
 	public void settingwhitekey(int whitecode){
-		if (whitecode!=-1) {
+		if (whitecode>=0&&whitecode<52) {
 			if (whitecode == 0)
 				btnPianoWhite[whitecode].setIcon(new ImageIcon("image/0.jpg"));
 			else if (whitecode == 1)

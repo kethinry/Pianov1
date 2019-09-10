@@ -213,7 +213,7 @@ public class MyKeyListener implements KeyListener {
 		if (userButton == 37)
 			myPiano.btn[16].setBackground(Color.WHITE);
 
-
+		if(whitecode<52&&whitecode>=0)
 		myPiano.btnPianoWhite[whitecode].setIcon(null);
 	}
 }

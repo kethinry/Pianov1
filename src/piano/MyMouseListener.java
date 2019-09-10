@@ -44,9 +44,10 @@ class MyMouseListener implements MouseListener {
 	@Override
 	public void mouseExited(MouseEvent arg0) {
 		myPiano.btn[i].setBackground(Color.WHITE);
-		if(i<=58) {
+		if(i<=58&&i>=0) {
 			KeyProperty key = myPiano.km.findByIndex(i);
-			if (key.getWhitecode() != -1) {
+			if (key.getWhitecode() >= 0&&key.getWhitecode()<52) {
+				//System.out.println('%'+key.getWhitecode()+"sha");
 				myPiano.btnPianoWhite[key.getWhitecode()].setIcon(null);
 			}
 		}

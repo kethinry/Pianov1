@@ -134,16 +134,18 @@ class PianoPanel extends JPanel {
 			myPiano.settingwhitekey(i);
 			int character = transformWhitePianoCodeToNewPianoCode(i) + 21;
 			KeyProperty key = myPiano.km.findByCharacter(character);
-			int btnCode = key.getIndex();
+			if(key!=null) {
+				int btnCode = key.getIndex();
 
-			if (!myPiano.isColorful)
-				myPiano.btn[btnCode].setBackground(Color.BLACK);
-			else {
-				if (myPiano.colorNum >= 6)
-					myPiano.colorNum = 0;
-				if(btnCode>=0){
-					myPiano.btn[btnCode].setBackground(myPiano.myColor[myPiano.colorNum]);
-					myPiano.colorNum++;
+				if (!myPiano.isColorful)
+					myPiano.btn[btnCode].setBackground(Color.BLACK);
+				else {
+					if (myPiano.colorNum >= 6)
+						myPiano.colorNum = 0;
+					if (btnCode >= 0) {
+						myPiano.btn[btnCode].setBackground(myPiano.myColor[myPiano.colorNum]);
+						myPiano.colorNum++;
+					}
 				}
 			}
 		}
@@ -151,10 +153,12 @@ class PianoPanel extends JPanel {
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			int character = transformWhitePianoCodeToNewPianoCode(i) + 21;
-			KeyProperty key = myPiano.km.findByCharacter(character);
-			int btnCode = key.getIndex();
 			myPiano.btnPianoWhite[i].setIcon(null);
-			if(btnCode>=0)myPiano.btn[btnCode].setBackground(Color.WHITE);
+			KeyProperty key = myPiano.km.findByCharacter(character);
+			if(key!=null){
+				int btnCode = key.getIndex();
+				if (btnCode >= 0) myPiano.btn[btnCode].setBackground(Color.WHITE);
+			}
 			// TODO Auto-generated method stub
             
 		}

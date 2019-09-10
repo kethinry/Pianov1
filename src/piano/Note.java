@@ -62,7 +62,10 @@ public class Note {
 					}
 				}
 				else{
-
+					if (i != -1) {
+						Thread.sleep(durationInt);
+						myPiano.btnPianoWhite[i].setIcon(null);
+					}
 				}
 			} else {
 
