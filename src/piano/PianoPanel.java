@@ -134,7 +134,8 @@ class PianoPanel extends JPanel {
 			myPiano.settingwhitekey(i);
 			int character = transformWhitePianoCodeToNewPianoCode(i) + 21;
 			KeyProperty key = myPiano.km.findByCharacter(character);
-			if(key!=null) {
+
+			if(key.getIndex()!=-1) {
 				int btnCode = key.getIndex();
 
 				if (!myPiano.isColorful)
@@ -155,7 +156,7 @@ class PianoPanel extends JPanel {
 			int character = transformWhitePianoCodeToNewPianoCode(i) + 21;
 			myPiano.btnPianoWhite[i].setIcon(null);
 			KeyProperty key = myPiano.km.findByCharacter(character);
-			if(key!=null){
+			if(key.getIndex()!=-1){
 				int btnCode = key.getIndex();
 				if (btnCode >= 0) myPiano.btn[btnCode].setBackground(Color.WHITE);
 			}

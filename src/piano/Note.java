@@ -44,12 +44,25 @@ public class Note {
 				myPiano.settingwhitekey(i);
 
 				KeyProperty key = myPiano.km.findByCharacter(character);
-				if(key!=null) {
+				boolean isControl = false;
+				if(key.getIndex()== -1){
+					key = myPiano.km.findByRiseCharacter(character);
+					isControl = true;
+				}
+				if(key.getIndex()!= -1) {
 					int userButton = key.getIndex();
 					if (userButton >= 0 && userButton < 60) {
 						myPiano.setkeycolor(userButton, 2);
+						if(isControl){
+							myPiano.setkeycolor(53,2);//ctrol±äÁÁ
+							myPiano.setkeycolor(57,2);
+						}
 						Thread.sleep(durationInt);
 						myPiano.setkeycolor(userButton, 5);
+						if(isControl) {
+							myPiano.setkeycolor(53, 5);
+							myPiano.setkeycolor(57,2);
+						}
 						if (i != -1) {
 							myPiano.btnPianoWhite[i].setIcon(null);
 						}

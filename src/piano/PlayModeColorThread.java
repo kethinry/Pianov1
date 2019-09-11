@@ -30,6 +30,9 @@ public class PlayModeColorThread extends Thread {
 			
 			int character = Integer.valueOf(noteOnlyNum);
 			KeyProperty key = myPiano.km.findByCharacter(character);
+			if(key.getIndex()==-1)
+				key=myPiano.km.findByRiseCharacter(character);
+
 			int buttonCode = key.getIndex();
 			
 			try {
@@ -40,16 +43,18 @@ public class PlayModeColorThread extends Thread {
 			}
 			if (playMode.on) {
 				myPiano.player.play(note);
-				myPiano.btn[buttonCode].setBackground(Color.GREEN);
-				myPiano.btn[myPiano.transformDurationToButtonCode(duration)].setBackground(myPiano.myGay);
+				if(buttonCode!=-1)
+					myPiano.btn[buttonCode].setBackground(Color.GREEN);
+				//myPiano.btn[myPiano.transformDurationToButtonCode(duration)].setBackground(myPiano.myGay);
 				try {
 					Thread.sleep(myPiano.transformDurationToTime(duration,80,false));
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					//e.printStackTrace();
 				}
-				myPiano.btn[buttonCode].setBackground(Color.WHITE);
-				myPiano.btn[myPiano.transformDurationToButtonCode(duration)].setBackground(Color.WHITE);
+				if(buttonCode!=-1)
+					myPiano.btn[buttonCode].setBackground(Color.WHITE);
+				//myPiano.btn[myPiano.transformDurationToButtonCode(duration)].setBackground(Color.WHITE);
 				done = true;
 			}
 		}

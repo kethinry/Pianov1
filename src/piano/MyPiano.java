@@ -526,14 +526,16 @@ public class MyPiano extends JFrame implements WindowListener, ActionListener {
 			channelNum = 1;// 达到16以后重新从1开始
 		return channelNum;
 	}
-	public String getString(int keyCode) {// 通过键盘编码和已有设置构成可以play的note字符串
+	public String getString(int keyCode,boolean isControl) {// 通过键盘编码和已有设置构成可以play的note字符串
 		String note = "",wxpNote="";
 		KeyProperty key = km.findByCode(keyCode);
-		int character = key.getCharacter();
+		int character ;
+		if(isControl)
+			character = key.getRisecharacter();
+		else
+			character = key.getCharacter();
 		if (character == -1)
 			return note;
-		if (isUpperLetter())
-			character++;
 		wxpNote=String.valueOf(character) + duration;
 		lblWuXianPu.addNote(wxpNote);
 		note = "V" + String.valueOf(getChannel(transformInstrument(jbxSetInstrument.getSelectedIndex()))) + " " + instrument + " " + wxpNote + " ";
@@ -543,11 +545,19 @@ public class MyPiano extends JFrame implements WindowListener, ActionListener {
 		return note;
 	}
 
-	public String getStreamString(boolean isPress,int keyCode,int channel) {// 通过键盘编码和已有设置构成可以play的note字符串
+	public String getStreamString(boolean isPress,int keyCode,int channel,boolean isControl) {// 通过键盘编码和已有设置构成可以play的note字符串
 		String note = "",wxpNote="";
 		KeyProperty key = km.findByCode(keyCode);
-		String newcharacter = key.getNewcharacter();
-		int character = key.getCharacter();
+		String newcharacter ;
+		int character ;
+		if(isControl){
+			newcharacter = key.getNewRiseCharacter();
+			character = key.getRisecharacter();
+		}
+		else{
+			newcharacter = key.getNewcharacter();
+			character = key.getCharacter();
+		}
 		//System.out.println("newcharacter="+newcharacter);
 		if (newcharacter == "n")
 			return "";

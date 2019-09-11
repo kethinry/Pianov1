@@ -37,6 +37,8 @@ class TeachMode {
 			myPiano.subArrayOnlyNum[i] = myPiano.subArrayOnlyNum[i].replaceFirst("[a-zA-Z]", "");
 			myPiano.character[i] = Integer.valueOf(myPiano.subArrayOnlyNum[i]);
 			KeyProperty key = myPiano.km.findByCharacter(myPiano.character[i]);
+			if(key.getIndex()== -1)
+				key = myPiano.km.findByRiseCharacter(myPiano.character[i]);
 			myPiano.keyCode[i] = key.getKeycode();
 			myPiano.buttonCode[i] = key.getIndex();
 			myPiano.durations[i] = myPiano.subArray[i].replaceFirst("I\\d+ \\d+", "");
@@ -53,6 +55,7 @@ class TeachMode {
 				&& myPiano.character[0] != 79 && myPiano.character[0] != 81 && myPiano.character[0] != 83
 				&& myPiano.character[0] != 84 && myPiano.character[0] != 86 && myPiano.character[0] != 88) {
 			myPiano.btn[28].setBackground(Color.YELLOW);
+
 			myPiano.btn[myPiano.buttonCode[0]].setBackground(Color.YELLOW);
 		} else {
 			myPiano.btn[myPiano.buttonCode[0]].setBackground(Color.YELLOW);

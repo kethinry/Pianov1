@@ -30,10 +30,14 @@ public class MyKeyListener implements KeyListener {
 
 	public void keyPressed(KeyEvent arg0) {
 		int a = arg0.getKeyCode();
+		boolean isCtrol = arg0.isControlDown();
 		if(a>128)return;
 
 		KeyProperty key = myPiano.km.findByCode(a);
-		int userCharacter = key.getCharacter();
+		int userCharacter;
+		if(isCtrol)
+			userCharacter = key.getRisecharacter();
+		else userCharacter=key.getCharacter();
 		int userButton = key.getIndex();
 		if(noteChannel[a] < 0){
 			noteChannel[a] = myPiano.getChannel(myPiano.transformInstrument(myPiano.jbxSetInstrument.getSelectedIndex()));
@@ -42,21 +46,17 @@ public class MyKeyListener implements KeyListener {
 				myPiano.timeString = myPiano.timeString + String.valueOf(t) + " ";
 				
 			}
-			if (myPiano.isUpperLetter()) {
-				userCharacter += 1;
-			}
-			
 			switch (myPiano.mode) {  //不同模式，按下键盘的色彩不同
 			case 0://自由演奏
 			case 2://乐谱记录
-				myPiano.streamingPlayer.stream(myPiano.getStreamString(true,a,noteChannel[a]));
+				myPiano.streamingPlayer.stream(myPiano.getStreamString(true,a,noteChannel[a],isCtrol));
 				myPiano.setkeycolor(userButton,1);
 				break;
 
 			case 1://教学模式
 				if (myPiano.currentNum < myPiano.numOfNote) {
 					if (userCharacter == myPiano.character[myPiano.currentNum]) { // 输入正确
-						myPiano.streamingPlayer.stream(myPiano.getStreamString(true,a,noteChannel[a]));
+						myPiano.streamingPlayer.stream(myPiano.getStreamString(true,a,noteChannel[a],isCtrol));
 						//myPiano.player.play(myPiano.getString(a));
 						myPiano.setkeycolor(userButton,2);
 						if (myPiano.currentNum == myPiano.numOfNote - 1
@@ -113,11 +113,16 @@ public class MyKeyListener implements KeyListener {
 
 	public void keyReleased(KeyEvent e) {
 		int a = e.getKeyCode();
+		boolean isControl = e.isControlDown();
 		if (a > 128) return;
 		if(myPiano.mode==0||myPiano.mode==2)
-			myPiano.streamingPlayer.stream(myPiano.getStreamString(false,a,noteChannel[a]));
+			myPiano.streamingPlayer.stream(myPiano.getStreamString(false,a,noteChannel[a],isControl));
 		KeyProperty key = myPiano.km.findByCode(a);
-		int userCharacter = key.getCharacter();
+		int userCharacter ;
+		if(isControl)
+			userCharacter = key.getRisecharacter();
+		else
+		 	userCharacter = key.getCharacter();
 		int userButton = key.getIndex();
 		int whitecode = key.getWhitecode();
 
@@ -125,7 +130,7 @@ public class MyKeyListener implements KeyListener {
 			if (myPiano.isUpperLetter())
 				userCharacter += 1;
 			if (myPiano.currentNum < myPiano.numOfNote && userCharacter == myPiano.character[myPiano.currentNum]) {
-				myPiano.streamingPlayer.stream(myPiano.getStreamString(false,a,noteChannel[a]));
+				myPiano.streamingPlayer.stream(myPiano.getStreamString(false,a,noteChannel[a],isControl));
 				myPiano.currentNum++;
 				myPiano.isTruePressed = true;
 			}
