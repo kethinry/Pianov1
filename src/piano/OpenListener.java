@@ -4,12 +4,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 
+import javax.sound.midi.MidiUnavailableException;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import org.jfugue.pattern.Pattern;
+import org.jfugue.realtime.RealtimePlayer;
 
 public class OpenListener implements ActionListener{
 	MyPiano myPiano;
@@ -23,23 +27,21 @@ public class OpenListener implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(!myPiano.isPlaying) {
 			Music music=new Music(myPiano);
-			if(music.getMusicFromFile()){
+			try {
+				RealtimePlayer player = new RealtimePlayer();
+				Pattern p=music.getMusicFromFile();//读取出音符组成的pattern，但是先让字幕播放，因为声音播放太快
 				music.play();
 				myPiano.isPlaying=true;
-			}
-			
+				player.play(p);//现在播放声音
+				
+			} catch (MidiUnavailableException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}		
 		}
 		else{
 			JOptionPane.showMessageDialog(null, "已有歌曲正在播放！");
 		}
-		/*
-
-		//如果不需要显示过滤的文件格式，下面3行可以不要
-		chooser.addChoosableFileFilter(new FileNameExtensionFilter("显示Gif图片文件","gif","GIF"));
-		chooser.addChoosableFileFilter(new FileNameExtensionFilter("显示JPeg图片文件","jpg","jpeg"));
-		chooser.addChoosableFileFilter(new FileNameExtensionFilter("显示doc文件","doc","DOC"));
-		int ret=chooser.showOpenDialog(null);
-*/
 	}
 
 }

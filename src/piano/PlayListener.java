@@ -11,6 +11,8 @@ import java.io.IOException;
 import javax.sound.midi.MidiUnavailableException;
 import javax.swing.*;
 
+import org.jfugue.realtime.RealtimePlayer;
+
 public class PlayListener implements ActionListener {
 	MyPiano myPiano;
 	JFileChooser chooser;
@@ -33,9 +35,16 @@ public class PlayListener implements ActionListener {
 		int ret=chooser.showOpenDialog(null);
 		if(!myPiano.isPlaying) {
 			Music music=new Music(myPiano);
-			if(music.getMusicFromFile()){
+			try {
+				RealtimePlayer player = new RealtimePlayer();
+				player.play(music.getMusicFromFile());
 				music.play();
 				myPiano.isPlaying=true;
+				
+				
+			} catch (MidiUnavailableException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 
 		}
