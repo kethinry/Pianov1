@@ -36,8 +36,8 @@ public class Note {
 		if (!music.isPlayed[index][num - 1] && beginTime >= 0) {
 			Thread.sleep(beginTime);
 			if (character >= 0) {
-				myPiano.player.play("V" + String.valueOf(myPiano.getChannel(instrument)) + " " + "I"
-						+ String.valueOf(instrument) + " " + String.valueOf(character) + durationString);
+				//myPiano.player.play("V" + String.valueOf(myPiano.getChannel(instrument)) + " " + "I"
+						//+ String.valueOf(instrument) + " " + String.valueOf(character) + durationString);
 				music.isPlayed[index][num - 1] = true;
 				int i = PianoPanel.transformCharaterToWhitePianoCode(character);
 

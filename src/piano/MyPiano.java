@@ -251,8 +251,8 @@ public class MyPiano extends JFrame implements WindowListener, ActionListener {
 		jbxSetTone.addItem(" A(-3)  ");
 		jbxSetTone.addItem(" Bb(-2) ");
 		jbxSetTone.addItem(" B(-1)  ");
-		pControl.add(lblSetDuration);
-		pControl.add(jbxSetDuration);
+		//pControl.add(lblSetDuration);
+		//pControl.add(jbxSetDuration);
 		jbxSetDuration.addItem(" È«Òô·û     ");
 		jbxSetDuration.addItem(" 1/2Òô·û  ");
 		jbxSetDuration.addItem(" 1/4Òô·û  ");
@@ -260,6 +260,7 @@ public class MyPiano extends JFrame implements WindowListener, ActionListener {
 		jbxSetDuration.addItem(" 1/16Òô·û");
 		jbxSetDuration.setSelectedIndex(2);
 		pControl.add(btnStart);
+		
 		/*LZH*/
 		//pControl.add(btnPauseOrWake);
 		/*LZH*/
