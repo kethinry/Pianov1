@@ -49,55 +49,6 @@ public class Music {
 
 	}
 
-	public Pattern getPatternFromFile() {//这个函数目前没用了，这是xhf为了使得显示和声音播放同步写的，现在声音播放直接写在下面的函数中了
-		Pattern musicPattern = new Pattern();
-
-		JFileChooser chooser = new JFileChooser(".");
-		int ret = chooser.showOpenDialog(null);
-
-		if (ret == JFileChooser.APPROVE_OPTION) {// 判断用户选择的是确定、取消等按钮
-			FileInputStream fin = null;
-			try {
-				fin = new FileInputStream(chooser.getSelectedFile().getPath());
-				FileReader fr = new FileReader(chooser.getSelectedFile().getPath());
-				BufferedReader br = new BufferedReader(fr);
-				String temp = "";
-				title = br.readLine();
-				author = br.readLine();
-				date = br.readLine();
-				part = Integer.parseInt(br.readLine());
-				standard = Integer.parseInt(br.readLine());
-				musicPattern.setTempo(Integer.parseInt(br.readLine()));
-				System.out.println(br.readLine());//这一行是调
-				System.out.println(br.readLine());//这一行是最大音符个数
-
-				for (int i = 0; i < part; i++) {// 每一种伴奏分别录入
-					Pattern pattern = new Pattern("V"+i+" ");
-					temp = br.readLine();
-					pattern.setInstrument(Integer.parseInt(br.readLine()));// 读取这一段伴奏乐器
-					int j = 1;
-					while (!(temp = br.readLine()).equals("#")) {
-						//System.out.print("temp="+temp);
-						pattern.add(temp+br.readLine());						
-					}
-					musicPattern.add(pattern);
-				}
-			} catch (FileNotFoundException e1) {
-				e1.printStackTrace();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			} finally {
-				try {
-					fin.close();
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-			}
-		}
-		System.out.print(musicPattern);
-		
-		return musicPattern;
-	}
 
 	public Pattern getMusicFromFile() {// 从文件中获得乐谱
 		// Music music = new Music(myPiano);

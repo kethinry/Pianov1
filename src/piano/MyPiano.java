@@ -565,9 +565,13 @@ public class MyPiano extends JFrame implements WindowListener, ActionListener {
 		/*if (isUpperLetter())
 			character++;*/
 		wxpNote=String.valueOf(character) + duration;
-		lblWuXianPu.addNote(wxpNote);
+		//lblWuXianPu.addNote(wxpNote);
 		if(isPress)note = "V" + String.valueOf(channel) + " " + instrument + " " + newcharacter + "o- ";
-		else note = "V" + String.valueOf(channel) + " " + instrument + " " + newcharacter + "-o ";
+		else {
+			note = "V" + String.valueOf(channel) + " " + instrument + " " + newcharacter + "-o ";
+			lblWuXianPu.addNote(wxpNote);
+		}
+
 		numOfNote++;
 		//System.out.println("note="+note);
 
