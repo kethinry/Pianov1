@@ -5,7 +5,7 @@ import java.awt.Color;
 import javax.sound.midi.MidiUnavailableException;
 import javax.swing.ImageIcon;
 
-import org.jfugue.realtime.RealtimePlayer;
+import org.jfugue.*;
 
 public class Note {
 	MyPiano myPiano;

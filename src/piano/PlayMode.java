@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.sound.midi.MidiUnavailableException;
 
-import org.jfugue.realtime.RealtimePlayer;
+import org.jfugue.*;
 
 
 
@@ -28,7 +28,7 @@ public class PlayMode {
 		String[] noteOnlyNum = new String[myPiano.numOfNote];
 
 		String[] durations = new String[myPiano.numOfNote];
-		RealtimePlayer player = new RealtimePlayer();
+		Player player = new Player();
 		note = musicString.split("  ");
 		String[] subTimeString = timeString.split(" ");
 		threads = new PlayModeColorThread[myPiano.numOfNote];

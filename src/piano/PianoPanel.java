@@ -10,11 +10,11 @@ import javax.swing.JButton;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
-import org.jfugue.realtime.RealtimePlayer;
+import org.jfugue.*;
 
 class PianoPanel extends JPanel {
 	MyPiano myPiano;
-	RealtimePlayer player;
+	Player player;
 	JPanel mainPanel = new JPanel();
 	
 	int NewPianoCode[] = new int[88];	//NewPianoCode+21«°∫√ «Character
@@ -58,7 +58,7 @@ class PianoPanel extends JPanel {
 
 	public PianoPanel(MyPiano myPiano) throws MidiUnavailableException {
 		this.myPiano=myPiano;
-		player = new RealtimePlayer();
+		player = new Player();
 		add(mainPanel);
 		mainPanel.setBounds(65, 20, 867, 100);
 		mainPanel.setBackground(Color.WHITE);

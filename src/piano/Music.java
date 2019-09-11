@@ -1,19 +1,12 @@
 package piano;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
+import java.io.*;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-import org.jfugue.pattern.Pattern;
+import org.jfugue.*;
+
 
 public class Music {
 
@@ -27,7 +20,6 @@ public class Music {
 	int noteCount[];// 表示每个声部有多少个音符
 	long startTime;// 乐谱的起始时间
 	Note note[][];// 每个主旋律音符
-
 	public int maxLength;
 	MyPiano myPiano;
 	public PlayModeThread[][] playModeThreads;
@@ -71,10 +63,10 @@ public class Music {
 		// character
 		// duration
 		//
-		Pattern musicPattern = new Pattern();/////后加=========
+		
 		JFileChooser chooser = new JFileChooser(".");
 		int ret = chooser.showOpenDialog(null);
-
+		Pattern musicPattern = null;
 		if (ret == JFileChooser.APPROVE_OPTION) {// 判断用户选择的是确定、取消等按钮
 			FileInputStream fin = null;
 			try {
@@ -88,17 +80,18 @@ public class Music {
 				part = Integer.parseInt(br.readLine());
 				standard = Integer.parseInt(br.readLine());
 				pace = Integer.parseInt(br.readLine());
-				musicPattern.setTempo(pace);/////后加=========
 				startTime = Integer.parseInt(br.readLine());
 				maxLength = Integer.parseInt(br.readLine());
 				note = new Note[part][maxLength];// 按照最大长度初始化数组
 				instrument = new int[part];
 				noteCount = new int[part];
+				musicPattern = new Pattern("T["+pace+"]");/////后加=========
 				for (int i = 0; i < part; i++) {// 每一种伴奏分别录入
 					noteCount[i] = Integer.parseInt(br.readLine());// 读取这一段伴奏共有多少音符
 					instrument[i] = Integer.parseInt(br.readLine());// 读取这一段伴奏乐器
-					Pattern pattern = new Pattern("V"+i+" ");/////后加=========
-					pattern.setInstrument(instrument[i]);// 读取这一段伴奏乐器/////后加=========
+					Pattern pattern = new Pattern("V"+i+" I"+instrument[i]+" ");/////后加=========
+					
+					//pattern.setInstrument(instrument[i]);// 读取这一段伴奏乐器/////后加=========
 					note[i][0] = new Note(myPiano, this, i, instrument[i], 1);
 					note[i][0].character = Integer.parseInt(br.readLine());
 					note[i][0].durationString = br.readLine();
@@ -115,7 +108,8 @@ public class Music {
 						note[i][j] = new Note(myPiano, this, i, instrument[i], j + 1);
 						note[i][j].character = Integer.parseInt(temp);
 						note[i][j].durationString = br.readLine();
-						pattern.add(temp+note[i][j].durationString);
+						
+						pattern.add(myPiano.transiformCharacterToNewCharacter(note[i][j].character)+note[i][j].durationString);
 						if (note[i][j].durationString.length() == 2) {
 							note[i][j].durationString = note[i][j].durationString.substring(0, 1);
 							note[i][j].isFudian = true;
@@ -126,6 +120,7 @@ public class Music {
 						j++;
 					}
 					musicPattern.add(pattern);
+					System.out.println(pattern);
 				}
 			} catch (FileNotFoundException e1) {
 				e1.printStackTrace();
@@ -148,6 +143,7 @@ public class Music {
 			}
 			
 		} 
+		System.out.println(musicPattern);
 		return musicPattern;
 	}
 
@@ -219,11 +215,11 @@ public class Music {
 	}
 
 	public void play() {// 播放这个乐谱对象
+		System.out.println("运行中");
 		playModeThreads = new PlayModeThread[part][maxLength];
 		createPlayThread();
 		startPlayThread();
-		playpanel = new PlayPanel(this);
-		myPiano.f.add(playpanel);
+		
 	}
 
 	public void createPlayThread() {// 创建播放线程
@@ -246,6 +242,7 @@ public class Music {
 	}
 
 	public void pause() {// 播放暂停
+		
 		for (int i = 0; i < part; i++) {
 			for (int j = 0; j < noteCount[i]; j++) {
 				playModeThreads[i][j].interrupt();

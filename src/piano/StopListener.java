@@ -8,14 +8,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 
 public class StopListener implements ActionListener{
-	Music music;
-	public StopListener(Music music, PlayPanel panel) {
+	Playing playing;
+	public StopListener(Playing playing) {
 		// TODO Auto-generated constructor stub
-		this.music=music;
-
+		this.playing = playing;
 	}
 	public void actionPerformed(ActionEvent e) {
-		music.stop();
-
+		playing.stopPlaying();
 	}
 }

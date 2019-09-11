@@ -5,15 +5,10 @@ import java.awt.event.ActionListener;
 import java.io.*;
 
 import javax.sound.midi.MidiUnavailableException;
-import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.*;
 
-import org.jfugue.pattern.Pattern;
-import org.jfugue.realtime.RealtimePlayer;
+
+import org.jfugue.*;
 
 public class OpenListener implements ActionListener{
 	MyPiano myPiano;
@@ -25,21 +20,10 @@ public class OpenListener implements ActionListener{
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(!myPiano.isPlaying) {
-			Music music=new Music(myPiano);
-			try {
-				RealtimePlayer player = new RealtimePlayer();
-				Pattern p=music.getMusicFromFile();//读取出音符组成的pattern，但是先让字幕播放，因为声音播放太快
-				music.play();
-				myPiano.isPlaying=true;
-				player.play(p);//现在播放声音
-				
-			} catch (MidiUnavailableException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}		
-		}
-		else{
+		if (!myPiano.isPlaying) {
+			Playing playing = new Playing(myPiano);
+			playing.start();
+		}else {
 			JOptionPane.showMessageDialog(null, "已有歌曲正在播放！");
 		}
 	}

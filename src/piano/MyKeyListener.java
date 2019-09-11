@@ -9,7 +9,7 @@ import java.awt.Color;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-import org.jfugue.player.Player;
+import org.jfugue.*;
 
 //import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 

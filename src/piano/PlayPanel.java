@@ -11,7 +11,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 class PlayPanel extends JPanel {
 
-	Music music;
+	Playing playing;
 	JLabel author = new JLabel();
 	JLabel title = new JLabel();
 	JButton btnPauseOrWake = new JButton();
@@ -19,9 +19,9 @@ class PlayPanel extends JPanel {
 	public PlayPanel(){
 		
 	}
-	public PlayPanel(Music music) {
+	public PlayPanel(Playing playing) {
 		
-		this.music=music;
+		this.playing = playing;
 		try {
 			UIManager.setLookAndFeel("com.jtattoo.plaf.mcwin.McWinLookAndFeel");
 			
@@ -49,9 +49,9 @@ class PlayPanel extends JPanel {
 		this.add(btnPauseOrWake);
 		this.add(btnStop);
 		title.setBounds(20, 20, 100, 30);
-		title.setText(music.title);
+		title.setText(playing.music.title);
 		author.setBounds(20,55, 100, 30);
-		author.setText(music.author);
+		author.setText(playing.music.author);
 		btnPauseOrWake.setBounds(20, 90, 40, 40);
 		btnPauseOrWake.setOpaque(false);
 		
@@ -66,7 +66,7 @@ class PlayPanel extends JPanel {
 		stopimg = stopimg.getScaledInstance(40, 40, Image.SCALE_DEFAULT);
 		btnstopimge.setImage(stopimg);
 		btnStop.setIcon(btnstopimge);
-		btnPauseOrWake.addActionListener(new PauseOrWakeListener(music,this));
-		btnStop.addActionListener(new StopListener(music,this));
+		btnPauseOrWake.addActionListener(new PauseOrWakeListener(playing,this));
+		btnStop.addActionListener(new StopListener(playing));
 	}
 }

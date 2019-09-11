@@ -10,9 +10,7 @@ import javax.print.attribute.standard.JobName;
 import javax.security.auth.Refreshable;
 import javax.sound.midi.MidiUnavailableException;
 import javax.swing.*;
-import org.jfugue.pattern.Pattern;
-import org.jfugue.player.Player;
-import org.jfugue.realtime.RealtimePlayer;
+import org.jfugue.*;
 import org.jfugue.StreamingPlayer;
 
 import com.jgoodies.looks.Fonts;
@@ -28,7 +26,7 @@ public class MyPiano extends JFrame implements WindowListener, ActionListener {
 	public JButton[] btn;
 	JButton btnPianoWhite[];
 	JButton btnPianoBlack[];
-	RealtimePlayer player;
+	Player player;
 	StreamingPlayer streamingPlayer ;
 	JFrame f = new JFrame("键盘音乐派对");
 	JLabel background;
@@ -119,7 +117,7 @@ public class MyPiano extends JFrame implements WindowListener, ActionListener {
 	public MyPiano() throws MidiUnavailableException, IOException {
 		
 		streamingPlayer = new StreamingPlayer();
-		player = new RealtimePlayer();
+		player = new Player();
 		btn = new JButton[128];
 		for (int i = 0; i < 127; i++) {
 			btn[i] = new JButton();
@@ -413,6 +411,7 @@ public class MyPiano extends JFrame implements WindowListener, ActionListener {
 	public void changeFont(Font f1){
 		
 	}
+
 	public void refresh(){
 		remember="";
 		txtOutput.setText("");
@@ -450,11 +449,61 @@ public class MyPiano extends JFrame implements WindowListener, ActionListener {
 			return "q";
 		}
 	}
-
+	public String transiformCharacterToNewCharacter(int character) {
+		if (character<0)return "-1";
+		String s = "";
+		int x,y;
+		x = character%12;
+		y = character/12;
+		switch (x) {
+		case 0:
+			s = "C";
+			break;
+		case 1:
+			s = "Db";
+			break;
+		case 2:
+			s = "D";
+			break;
+		case 3:
+			s = "Eb";
+			break;
+		case 4:
+			s = "E";
+			break;
+		case 5:
+			s = "F";
+			break;
+		case 6:
+			s = "Gb";
+			break;
+		case 7:
+			s = "G";
+			break;
+		case 8:
+			s = "Ab";
+			break;
+		case 9:
+			s = "A";
+			break;
+		case 10:
+			s = "Bb";
+			break;
+		case 11:
+			s = "B";
+			break;
+		default:
+			s = "";
+			break;
+		}
+		return s+y;
+	}
+	
 	public int PressurePlus() {
 		plus.addActionListener(new ActionListener() {// 开始演奏按钮点击事件
 			public void actionPerformed(ActionEvent e) {
-				player.changeInstrument(transformInstrument(jbxSetInstrument.getSelectedIndex()));
+				instrument = String.valueOf(transformInstrument(jbxSetInstrument.getSelectedIndex()));
+				//player.changeInstrument(transformInstrument(jbxSetInstrument.getSelectedIndex()));
 				for (int i = 0; i < 128; i++) {
 					btn[i].requestFocus();
 				}
