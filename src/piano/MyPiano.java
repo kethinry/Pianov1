@@ -113,6 +113,9 @@ public class MyPiano extends JFrame implements WindowListener, ActionListener {
 	int currentNum = 0;//示教模式下的音符数量计数器，每次按对一个音符，就加一
 	int pressCount=0;//任意模式下的弹奏计数器，只要按下键盘，就加一
 	KeyManager km = new KeyManager(1);//每个键盘键的各类属性
+	Transform trans = new Transform();//所有转化函数的调用
+	SettingKey settingkey = new SettingKey(this);
+	CreateString createString = new CreateString(this);
 
 	public MyPiano() throws MidiUnavailableException, IOException {
 		
@@ -408,9 +411,6 @@ public class MyPiano extends JFrame implements WindowListener, ActionListener {
 		}
         new MyPiano();
 	}
-	public void changeFont(Font f1){
-		
-	}
 
 	public void refresh(){
 		remember="";
@@ -423,83 +423,8 @@ public class MyPiano extends JFrame implements WindowListener, ActionListener {
 		
 		
 	}
-	public int transformInstrument(int selectIndex) {
-		return selectIndex * 8;
-	}
 
-	public String transformDuration(int selectIndex) {
-		switch (selectIndex) {
-		case 0:
-			return "w";
-		case 1:
-			return "h";
-		case 2:
-			return "q";
-		case 3:
-			return "i";
-		case 4:
-			return "s";
-		case 5:
-			return "t";
-		case 6:
-			return "x";
-		case 7:
-			return "o";
-		default:
-			return "q";
-		}
-	}
-	public String transiformCharacterToNewCharacter(int character) {
-		if (character<0)return "-1";
-		String s = "";
-		int x,y;
-		x = character%12;
-		y = character/12;
-		switch (x) {
-		case 0:
-			s = "C";
-			break;
-		case 1:
-			s = "Db";
-			break;
-		case 2:
-			s = "D";
-			break;
-		case 3:
-			s = "Eb";
-			break;
-		case 4:
-			s = "E";
-			break;
-		case 5:
-			s = "F";
-			break;
-		case 6:
-			s = "Gb";
-			break;
-		case 7:
-			s = "G";
-			break;
-		case 8:
-			s = "Ab";
-			break;
-		case 9:
-			s = "A";
-			break;
-		case 10:
-			s = "Bb";
-			break;
-		case 11:
-			s = "B";
-			break;
-		default:
-			s = "";
-			break;
-		}
-		return s+y;
-	}
-	
-	public int PressurePlus() {
+/*	public int PressurePlus() {
 		plus.addActionListener(new ActionListener() {// 开始演奏按钮点击事件
 			public void actionPerformed(ActionEvent e) {
 				instrument = String.valueOf(transformInstrument(jbxSetInstrument.getSelectedIndex()));
@@ -510,57 +435,7 @@ public class MyPiano extends JFrame implements WindowListener, ActionListener {
 			}
 		});
 		return 0;
-	}
-
-	public long transformDurationToTime(String durations,int pace,boolean isFudian) {
-		
-		pace=60000/pace;
-		if(isFudian)
-			pace*=1.5;
-		switch (durations) {
-		case "w":
-			return 4*pace;
-		case "h":
-			return 2*pace;
-		case "q":
-			return pace;
-		case "i":
-			return pace/2;
-		case "s":
-			return pace/4;
-		case "t":
-			return pace/8;
-		case "x":
-			return pace/16;
-		case "o":
-			return pace/32;
-		default:
-			return 500;
-		}
-	}
-	//下面这个函数按理说取消切换音长快捷键之后应该没有用了，但是第一个用的地方貌似跟是否是最后一个音符有关，没太明白
-	public int transformDurationToButtonCode(String durations) {
-		switch (durations) {
-		case "w":
-			return 25;
-		case "h":
-			return 26;
-		case "q":
-			return 27;
-		case "i":
-			return 38;
-		case "s":
-			return 39;
-		case "t":
-			return 49;
-		case "x":
-			return 50;
-		case "o":
-			return 51;
-		default:
-			return 27;
-		}
-	}
+	}*/
 
 	public boolean isUpperLetter() {// 判断大写锁定是否打开
 		Toolkit.getDefaultToolkit().setDynamicLayout(false);
@@ -576,133 +451,13 @@ public class MyPiano extends JFrame implements WindowListener, ActionListener {
 			channelNum = 1;// 达到16以后重新从1开始
 		return channelNum;
 	}
-	public String getString(int keyCode,boolean isControl) {// 通过键盘编码和已有设置构成可以play的note字符串
-		String note = "",wxpNote="";
-		KeyProperty key = km.findByCode(keyCode);
-		int character ;
-		if(isControl)
-			character = key.getRisecharacter();
-		else
-			character = key.getCharacter();
-		if (character == -1)
-			return note;
-		wxpNote=String.valueOf(character) + duration;
-		lblWuXianPu.addNote(wxpNote);
-		note = "V" + String.valueOf(getChannel(transformInstrument(jbxSetInstrument.getSelectedIndex()))) + " " + instrument + " " + wxpNote + " ";
-		numOfNote++;
-		//System.out.println("note="+note);
-		
-		return note;
-	}
+
 	public String f2dot(String s) {//用于兼容两个版本，原版本浮点用f表示，用该函数转化成.
 		int len = s.length();
 		if(len <= 1)return s;
 		if(s.substring(len-1).equals("f"))
 			return s.substring(0,len-1)+".";	
 		return s;
-	}
-	public String getStreamString(boolean isPress,int keyCode,int channel,boolean isControl) {// 通过键盘编码和已有设置构成可以play的note字符串
-		String note = "",wxpNote="";
-		KeyProperty key = km.findByCode(keyCode);
-		String newcharacter ;
-		int character ;
-		if(isControl){
-			newcharacter = key.getNewRiseCharacter();
-			character = key.getRisecharacter();
-		}
-		else{
-			newcharacter = key.getNewcharacter();
-			character = key.getCharacter();
-		}
-		//System.out.println("newcharacter="+newcharacter);
-		if (newcharacter.equals("n"))
-			return "";
-		/*if (isUpperLetter())
-			character++;*/
-		wxpNote=String.valueOf(character) + duration;
-		//lblWuXianPu.addNote(wxpNote);
-		if(isPress)note = "V" + String.valueOf(channel) + " " + instrument + " " + newcharacter + "o- ";
-		else {
-			note = "V" + String.valueOf(channel) + " " + instrument + " " + newcharacter + "-o ";
-			lblWuXianPu.addNote(wxpNote);
-		}
-
-		numOfNote++;
-		//System.out.println("note="+note);
-
-		return note;
-	}
-
-
-	public void settingwhitekey(int whitecode){
-		if (whitecode>=0&&whitecode<52) {
-			if (whitecode == 0)
-				btnPianoWhite[whitecode].setIcon(new ImageIcon("image/0.jpg"));
-			else if (whitecode == 1)
-				btnPianoWhite[whitecode].setIcon(new ImageIcon("image/7.jpg"));
-			switch ((whitecode - 2) % 7) {
-				case 0:
-					btnPianoWhite[whitecode].setIcon(new ImageIcon("image/1.jpg"));break;
-				case 1:
-					btnPianoWhite[whitecode].setIcon(new ImageIcon("image/2.jpg"));break;
-				case 2:
-					btnPianoWhite[whitecode].setIcon(new ImageIcon("image/3.jpg"));break;
-				case 3:
-					btnPianoWhite[whitecode].setIcon(new ImageIcon("image/4.jpg"));break;
-				case 4:
-					btnPianoWhite[whitecode].setIcon(new ImageIcon("image/5.jpg"));break;
-				case 5:
-					btnPianoWhite[whitecode].setIcon(new ImageIcon("image/6.jpg"));break;
-				case 6:
-					btnPianoWhite[whitecode].setIcon(new ImageIcon("image/7.jpg"));break;
-				default:
-					btnPianoWhite[whitecode].setIcon(null);break;
-			}
-		}
-	}
-	public void setkeycolor(int btni,int mode){
-		switch(mode) {
-			case 1:
-				if (!isColorful) {// 黑白键盘模式
-					btn[btni].setBackground(Color.BLACK);
-					if (btni == 41) //41键是shift，另一边52也要显示
-						btn[btni].setBackground(Color.BLACK);
-					if (btni == 53) //53和57都是ctrl
-						btn[57].setBackground(Color.BLACK);
-				} else {// 多彩键盘模式
-					if (colorNum >= 6)
-						colorNum = 0;
-					if (btni != -1)
-						btn[btni].setBackground(myColor[colorNum]);
-					if (btni == 41)
-						btn[52].setBackground(myColor[colorNum]);
-					if (btni == 53)
-						btn[57].setBackground(myColor[colorNum]);
-					colorNum++;
-				}break;
-			case 2:
-				btn[btni].setBackground(Color.GREEN);
-				if (btni == 41)
-					btn[52].setBackground(Color.GREEN);
-				if (btni == 53)
-					btn[57].setBackground(Color.GREEN);
-				break;
-			case 3:
-				btn[btni].setBackground(Color.RED);
-			case 4:
-				btn[btni].setBackground(myPink);
-				if (btni == 41)
-					btn[52].setBackground(myPink);
-				if (btni == 53)
-					btn[57].setBackground(myPink);
-			case 5:
-				btn[btni].setBackground(Color.WHITE);
-				if (btni == 41)
-					btn[52].setBackground(Color.WHITE);
-				if (btni == 53)
-					btn[57].setBackground(Color.WHITE);
-				break;
-		}
 	}
 
 	public void windowActivated(WindowEvent arg0) {

@@ -40,7 +40,7 @@ public class MyKeyListener implements KeyListener {
 		else userCharacter=key.getCharacter();
 		int userButton = key.getIndex();
 		if(noteChannel[a] < 0){
-			noteChannel[a] = myPiano.getChannel(myPiano.transformInstrument(myPiano.jbxSetInstrument.getSelectedIndex()));
+			noteChannel[a] = myPiano.getChannel(myPiano.trans.transformInstrument(myPiano.jbxSetInstrument.getSelectedIndex()));
 			long t = System.currentTimeMillis() - myPiano.beginTime;//当前时间减去按下开始演奏的时间
 			if (userCharacter > 0) {
 				myPiano.timeString = myPiano.timeString + String.valueOf(t) + " ";
@@ -49,21 +49,21 @@ public class MyKeyListener implements KeyListener {
 			switch (myPiano.mode) {  //不同模式，按下键盘的色彩不同
 			case 0://自由演奏
 			case 2://乐谱记录
-				myPiano.streamingPlayer.stream(myPiano.getStreamString(true,a,noteChannel[a],isCtrol));
-				myPiano.setkeycolor(userButton,1);
+				myPiano.streamingPlayer.stream(myPiano.createString.getStreamString(true,a,noteChannel[a],isCtrol));
+				myPiano.settingkey.setkeycolor(userButton,1);
 				break;
 
 			case 1://教学模式
 				if (myPiano.currentNum < myPiano.numOfNote) {
 					if (userCharacter == myPiano.character[myPiano.currentNum]) { // 输入正确
-						myPiano.streamingPlayer.stream(myPiano.getStreamString(true,a,noteChannel[a],isCtrol));
+						myPiano.streamingPlayer.stream(myPiano.createString.getStreamString(true,a,noteChannel[a],isCtrol));
 						//myPiano.player.play(myPiano.getString(a));
-						myPiano.setkeycolor(userButton,2);
+						myPiano.settingkey.setkeycolor(userButton,2);
 						if (myPiano.currentNum == myPiano.numOfNote - 1
-								|| myPiano.transformDurationToButtonCode(myPiano.durations[myPiano.currentNum]) != myPiano
-										.transformDurationToButtonCode(myPiano.durations[myPiano.currentNum + 1])) // 最后一个音符
+								|| myPiano.trans.transformDurationToButtonCode(myPiano.durations[myPiano.currentNum]) != myPiano.
+										trans.transformDurationToButtonCode(myPiano.durations[myPiano.currentNum + 1])) // 最后一个音符
 																													// 或者当前的音符不等于下一个音符，那么当前音符变白
-							myPiano.btn[myPiano.transformDurationToButtonCode(myPiano.durations[myPiano.currentNum])]
+							myPiano.btn[myPiano.trans.transformDurationToButtonCode(myPiano.durations[myPiano.currentNum])]
 									.setBackground(Color.WHITE);
 					//就是上面这个if没懂
 					} else {
@@ -79,9 +79,9 @@ public class MyKeyListener implements KeyListener {
 								e.printStackTrace();
 							}
 							sound1.play();
-							myPiano.setkeycolor(userButton,3);
+							myPiano.settingkey.setkeycolor(userButton,3);
 						} else {
-							myPiano.setkeycolor(userButton,4);
+							myPiano.settingkey.setkeycolor(userButton,4);
 						}
 						myPiano.isTruePressed = false;
 
@@ -96,11 +96,11 @@ public class MyKeyListener implements KeyListener {
 				break;
 			}
 			int whitecode = key.getWhitecode();
-			myPiano.settingwhitekey(whitecode);
+			myPiano.settingkey.settingwhitekey(whitecode);
 			if (userButton == 55) {
 				myPiano.jbxSetInstrument.setSelectedIndex((myPiano.jbxSetInstrument.getSelectedIndex() + 1) % 14);
 				myPiano.instrument = "I"
-						+ String.valueOf(myPiano.transformInstrument(myPiano.jbxSetInstrument.getSelectedIndex()));
+						+ String.valueOf(myPiano.trans.transformInstrument(myPiano.jbxSetInstrument.getSelectedIndex()));
 			}
 
 		}
@@ -116,7 +116,7 @@ public class MyKeyListener implements KeyListener {
 		boolean isControl = e.isControlDown();
 		if (a > 128) return;
 		if(myPiano.mode==0||myPiano.mode==2)
-			myPiano.streamingPlayer.stream(myPiano.getStreamString(false,a,noteChannel[a],isControl));
+			myPiano.streamingPlayer.stream(myPiano.createString.getStreamString(false,a,noteChannel[a],isControl));
 		KeyProperty key = myPiano.km.findByCode(a);
 		int userCharacter ;
 		if(isControl)
@@ -127,10 +127,8 @@ public class MyKeyListener implements KeyListener {
 		int whitecode = key.getWhitecode();
 
 		if (myPiano.mode == 1) {
-			if (myPiano.isUpperLetter())
-				userCharacter += 1;
 			if (myPiano.currentNum < myPiano.numOfNote && userCharacter == myPiano.character[myPiano.currentNum]) {
-				myPiano.streamingPlayer.stream(myPiano.getStreamString(false,a,noteChannel[a],isControl));
+				myPiano.streamingPlayer.stream(myPiano.createString.getStreamString(false,a,noteChannel[a],isControl));
 				myPiano.currentNum++;
 				myPiano.isTruePressed = true;
 			}
@@ -201,7 +199,7 @@ public class MyKeyListener implements KeyListener {
 
 					myPiano.btn[myPiano.buttonCode[myPiano.currentNum]].setBackground(Color.YELLOW);
 				}
-				myPiano.btn[myPiano.transformDurationToButtonCode(myPiano.durations[myPiano.currentNum])]
+				myPiano.btn[myPiano.trans.transformDurationToButtonCode(myPiano.durations[myPiano.currentNum])]
 						.setBackground(myPiano.myGay);
 
 			}

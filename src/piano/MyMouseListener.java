@@ -27,14 +27,14 @@ class MyMouseListener implements MouseListener {
 		int keyCode = key.getKeycode();
 		if (keyCode >= 97 && keyCode <= 122) {
 			a = keyCode - 32;
-			myPiano. player.play(myPiano.getString(a,false));
+			myPiano. player.play(myPiano.createString.getString(a,false));
 		}
 		if (keyCode >= 48 && keyCode <= 58) {
 			a = keyCode;
-			myPiano.player.play(myPiano.getString(a,false));
+			myPiano.player.play(myPiano.createString.getString(a,false));
 		}
 		int whitecode = key.getWhitecode();
-		myPiano.settingwhitekey(whitecode);
+		myPiano.settingkey.settingwhitekey(whitecode);
 	}
 
 	@Override

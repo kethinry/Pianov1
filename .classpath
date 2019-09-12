@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="/media/huifeng/软件/js/键盘音乐派对专用包/jgoodies-forms-1.8.0.jar"/>
+	<classpathentry kind="lib" path="/media/huifeng/软件/js/键盘音乐派对专用包/jgoodies-forms-1.8.0-tests.jar"/>
+	<classpathentry kind="lib" path="/media/huifeng/软件/js/键盘音乐派对专用包/jfugue-4.0.3-with-musicxml.jar"/>
+	<classpathentry kind="lib" path="/media/huifeng/软件/js/键盘音乐派对专用包/mysql-connector-java-5.1.14-bin.jar"/>
+	<classpathentry kind="lib" path="/media/huifeng/软件/js/键盘音乐派对专用包/jgoodies-looks-2.5.3-javadoc.jar"/>
+	<classpathentry kind="lib" path="/media/huifeng/软件/js/键盘音乐派对专用包/JTattoo-1.6.11.jar"/>
+	<classpathentry kind="lib" path="/media/huifeng/软件/js/键盘音乐派对专用包/jgoodies-common-1.4.0-sources.jar"/>
+	<classpathentry kind="lib" path="/media/huifeng/软件/js/键盘音乐派对专用包/jgoodies-looks-2.5.3.jar"/>
+	<classpathentry kind="lib" path="/media/huifeng/软件/js/键盘音乐派对专用包/jgoodies-looks-2.5.3-sources.jar"/>
+	<classpathentry kind="lib" path="/media/huifeng/软件/js/键盘音乐派对专用包/jgoodies-looks-2.5.3-tests.jar"/>
+	<classpathentry kind="lib" path="/media/huifeng/软件/js/键盘音乐派对专用包/jgoodies-forms-1.8.0-javadoc.jar"/>
+	<classpathentry kind="lib" path="/media/huifeng/软件/js/键盘音乐派对专用包/jgoodies-forms-1.8.0-sources.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

@@ -4,8 +4,8 @@ import javax.swing.JOptionPane;
 
 import org.jfugue.*;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
-import com.sun.org.apache.xerces.internal.impl.dv.ValidatedInfo;
+//import com.sun.org.apache.bcel.internal.generic.NEW;
+//	import com.sun.org.apache.xerces.internal.impl.dv.ValidatedInfo;
 
 public class Playing extends Thread {// 开始播放时，创建一个Playing对象
 	MyPiano myPiano;

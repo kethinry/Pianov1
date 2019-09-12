@@ -102,7 +102,7 @@ public class Music {
 						note[i][0].isFudian = true;
 						note[i][0].durationString = note[i][0].durationString.substring(0, 1);
 					}
-					note[i][0].durationInt = myPiano.transformDurationToTime(note[i][0].durationString, pace,
+					note[i][0].durationInt = myPiano.trans.transformDurationToTime(note[i][0].durationString, pace,
 							note[i][0].isFudian);
 					note[i][0].beginTime = 0;
 					int j = 1;
@@ -112,12 +112,12 @@ public class Music {
 						note[i][j].character = Integer.parseInt(temp);
 						note[i][j].durationString = br.readLine();
 						
-						pattern.add(myPiano.transiformCharacterToNewCharacter(note[i][j].character)+myPiano.f2dot(note[i][j].durationString));
+						pattern.add(myPiano.trans.transiformCharacterToNewCharacter(note[i][j].character)+myPiano.f2dot(note[i][j].durationString));
 						if (note[i][j].durationString.length() == 2) {
 							note[i][j].durationString = note[i][j].durationString.substring(0, 1);
 							note[i][j].isFudian = true;
 						}
-						note[i][j].durationInt = myPiano.transformDurationToTime(note[i][j].durationString, pace,
+						note[i][j].durationInt = myPiano.trans.transformDurationToTime(note[i][j].durationString, pace,
 								note[i][j].isFudian);
 						note[i][j].beginTime = note[i][j - 1].beginTime + note[i][j - 1].durationInt;
 						j++;
