@@ -9,7 +9,7 @@ import org.jfugue.*;
 
 
 public class Music {
-
+	Playing playing;
 	String title;// 乐谱的标题
 	String author;// 乐谱的作者
 	String date;// 乐谱的创作时间
@@ -22,8 +22,8 @@ public class Music {
 	Note note[][];// 每个主旋律音符
 	public int maxLength;
 	MyPiano myPiano;
-	public PlayModeThread[][] playModeThreads;
-	EndThread endThread;
+	public PlayModeThread[] playModeThreads;
+	//EndThread endThread;
 
 	boolean isPlayed[][];
 
@@ -36,12 +36,15 @@ public class Music {
 		note = new Note[part][maxLength + 10];
 	}
 
-	public Music(MyPiano myPiano) {
+	public Music(MyPiano myPiano,Playing playing) {
 		this.myPiano = myPiano;
-
+		this.playing = playing;
 	}
 
-
+	public Music(MyPiano myPiano) {
+		this.myPiano = myPiano;
+	}
+	
 	public Pattern getMusicFromFile() {// 从文件中获得乐谱
 		// Music music = new Music(myPiano);
 		// 标准文件存储格式
@@ -109,7 +112,7 @@ public class Music {
 						note[i][j].character = Integer.parseInt(temp);
 						note[i][j].durationString = br.readLine();
 						
-						pattern.add(myPiano.transiformCharacterToNewCharacter(note[i][j].character)+note[i][j].durationString);
+						pattern.add(myPiano.transiformCharacterToNewCharacter(note[i][j].character)+myPiano.f2dot(note[i][j].durationString));
 						if (note[i][j].durationString.length() == 2) {
 							note[i][j].durationString = note[i][j].durationString.substring(0, 1);
 							note[i][j].isFudian = true;
@@ -120,7 +123,7 @@ public class Music {
 						j++;
 					}
 					musicPattern.add(pattern);
-					System.out.println(pattern);
+					//System.out.println(pattern);
 				}
 			} catch (FileNotFoundException e1) {
 				e1.printStackTrace();
@@ -143,7 +146,6 @@ public class Music {
 			}
 			
 		} 
-		System.out.println(musicPattern);
 		return musicPattern;
 	}
 
@@ -187,7 +189,7 @@ public class Music {
 					for (int j = 0; j < noteCount[i]; j++) {
 						writer.write(note[i][j].character + "\r\n");
 						if (note[i][j].isFudian)
-							writer.write(note[i][j].durationString + "f\r\n");
+							writer.write(note[i][j].durationString + ".\r\n");
 						else
 							writer.write(note[i][j].durationString + "\r\n");
 					}
@@ -215,41 +217,34 @@ public class Music {
 	}
 
 	public void play() {// 播放这个乐谱对象
-		System.out.println("运行中");
-		playModeThreads = new PlayModeThread[part][maxLength];
+		//System.out.println("运行中");
 		createPlayThread();
 		startPlayThread();
-		
 	}
 
 	public void createPlayThread() {// 创建播放线程
+		playModeThreads = new PlayModeThread[part];
 		for (int i = 0; i < part; i++) {
-			for (int j = 0; j < noteCount[i]; j++) {
-				playModeThreads[i][j] = new PlayModeThread(myPiano, note[i][j]);// 原先使用的是一维数组的playModeThread
-			}
+			playModeThreads[i] = new PlayModeThread(myPiano, this,i);// 原先使用的是一维数组的playModeThread
 		}
-		endThread = new EndThread(this);
+		//endThread = new EndThread(playing);
 	}
 
 	public void startPlayThread() {
 		for (int i = 0; i < part; i++) {
-			for (int j = 0; j < noteCount[i]; j++) {
-				playModeThreads[i][j].start();
-			}
+			playModeThreads[i].start();
 		}
-
-		endThread.start();
+		//endThread.start();
 	}
 
 	public void pause() {// 播放暂停
 		
 		for (int i = 0; i < part; i++) {
 			for (int j = 0; j < noteCount[i]; j++) {
-				playModeThreads[i][j].interrupt();
-				;
+				playModeThreads[i].interrupt();
 			}
 		}
-		endThread.stop();
+		//endThread.stop();
 		myPiano.refresh();
 
 		int[] stopLocation = new int[part];
@@ -273,7 +268,7 @@ public class Music {
 	}
 
 	public void wake() { // 播放继续
-		playModeThreads = new PlayModeThread[part][maxLength];
+		playModeThreads = new PlayModeThread[part];
 		createPlayThread();
 		startPlayThread();
 	}
@@ -281,14 +276,10 @@ public class Music {
 	public void stop() {// 播放停止
 		for (int i = 0; i < part; i++) {
 			for (int j = 0; j < noteCount[i]; j++) {
-				playModeThreads[i][j].stop();
+				playModeThreads[i].stop();
 			}
 		}
-		playpanel.remove(playpanel);
-		playpanel.setVisible(false);
-		endThread.interrupt();
-		myPiano.isPlaying = false;
-		myPiano.refresh();
+		//endThread.interrupt();
 		myPiano.lblWuXianPu.x_note = myPiano.lblWuXianPu.left_bound;
 	}
 }

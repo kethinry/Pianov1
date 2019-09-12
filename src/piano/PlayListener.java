@@ -28,20 +28,10 @@ public class PlayListener implements ActionListener {
 		myPiano.itemPlay.setText("播放  √");
 		chooser=new JFileChooser(".");
 		
-		//如果不需要显示过滤的文件格式，下面3行可以不要
-		/*chooser.addChoosableFileFilter(new FileNameExtensionFilter("显示Gif图片文件","gif","GIF"));
-		chooser.addChoosableFileFilter(new FileNameExtensionFilter("显示JPeg图片文件","jpg","jpeg"));
-		chooser.addChoosableFileFilter(new FileNameExtensionFilter("显示doc文件","doc","DOC"));*/
-		int ret=chooser.showOpenDialog(null);
-		if(!myPiano.isPlaying) {
-			Music music=new Music(myPiano);
-			Player player = new Player();
-			player.play(music.getMusicFromFile());
-			music.play();
-			myPiano.isPlaying=true;
-
-		}
-		else{
+		if (!myPiano.isPlaying) {
+			Playing playing = new Playing(myPiano);
+			playing.start();			
+		}else {
 			JOptionPane.showMessageDialog(null, "已有歌曲正在播放！");
 		}
 		/*

@@ -1,9 +1,5 @@
 package piano;
 
-
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.sound.midi.MidiUnavailableException;
 
 import org.jfugue.*;
@@ -52,10 +48,7 @@ public class PlayMode {
 		
 	}
 	public void readString(String fileString) {
-		
-
 		String[] subString = fileString.split("\r\n");
-
 		myPiano.title = subString[1].replaceFirst("#title:", "");
 		myPiano.date = subString[2].replaceFirst("#date:", "");
 		myPiano.author = subString[3].replaceFirst("#author:", "");

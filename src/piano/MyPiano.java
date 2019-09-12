@@ -594,7 +594,13 @@ public class MyPiano extends JFrame implements WindowListener, ActionListener {
 		
 		return note;
 	}
-
+	public String f2dot(String s) {//用于兼容两个版本，原版本浮点用f表示，用该函数转化成.
+		int len = s.length();
+		if(len <= 1)return s;
+		if(s.substring(len-1).equals("f"))
+			return s.substring(0,len-1)+".";	
+		return s;
+	}
 	public String getStreamString(boolean isPress,int keyCode,int channel,boolean isControl) {// 通过键盘编码和已有设置构成可以play的note字符串
 		String note = "",wxpNote="";
 		KeyProperty key = km.findByCode(keyCode);
@@ -609,7 +615,7 @@ public class MyPiano extends JFrame implements WindowListener, ActionListener {
 			character = key.getCharacter();
 		}
 		//System.out.println("newcharacter="+newcharacter);
-		if (newcharacter == "n")
+		if (newcharacter.equals("n"))
 			return "";
 		/*if (isUpperLetter())
 			character++;*/

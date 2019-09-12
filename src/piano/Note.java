@@ -31,59 +31,59 @@ public class Note {
 	}
 
 	public void playNote() throws InterruptedException, MidiUnavailableException {// 播放这个音符
+		
 		durationInt = myPiano.transformDurationToTime(durationString, music.pace, isFudian);
+		for(int i=0;i<num;i++) {
+			if (!music.isPlayed[index][i] && beginTime >= 0) {
+				if (character >= 0) {
+					music.isPlayed[index][i] = true;
+					int whitePianoCode = PianoPanel.transformCharaterToWhitePianoCode(character);
 
-		if (!music.isPlayed[index][num - 1] && beginTime >= 0) {
-			Thread.sleep(beginTime);
-			if (character >= 0) {
-				//myPiano.player.play("V" + String.valueOf(myPiano.getChannel(instrument)) + " " + "I"
-						//+ String.valueOf(instrument) + " " + String.valueOf(character) + durationString);
-				music.isPlayed[index][num - 1] = true;
-				int i = PianoPanel.transformCharaterToWhitePianoCode(character);
+					myPiano.settingwhitekey(whitePianoCode);
 
-				myPiano.settingwhitekey(i);
-
-				KeyProperty key = myPiano.km.findByCharacter(character);
-				boolean isControl = false;
-				if(key.getIndex()== -1){
-					key = myPiano.km.findByRiseCharacter(character);
-					isControl = true;
-				}
-				if(key.getIndex()!= -1) {
-					int userButton = key.getIndex();
-					if (userButton >= 0 && userButton < 60) {
-						myPiano.setkeycolor(userButton, 2);
-						if(isControl){
-							myPiano.setkeycolor(53,2);//ctrol变亮
-							myPiano.setkeycolor(57,2);
-						}
-						Thread.sleep(durationInt);
-						myPiano.setkeycolor(userButton, 5);
-						if(isControl) {
-							myPiano.setkeycolor(53, 5);
-							myPiano.setkeycolor(57,2);
-						}
-						if (i != -1) {
-							myPiano.btnPianoWhite[i].setIcon(null);
-						}
-
-					} else {
-						if (i != -1) {
+					KeyProperty key = myPiano.km.findByCharacter(character);
+					boolean isControl = false;
+					if(key.getIndex()== -1){
+						key = myPiano.km.findByRiseCharacter(character);
+						isControl = true;
+					}
+					if(key.getIndex()!= -1) {
+						int userButton = key.getIndex();
+						if (userButton >= 0 && userButton < 60) {
+							myPiano.setkeycolor(userButton, 2);
+							if(isControl){
+								myPiano.setkeycolor(53,2);//ctrol变亮
+								myPiano.setkeycolor(57,2);
+							}
 							Thread.sleep(durationInt);
-							myPiano.btnPianoWhite[i].setIcon(null);
+							myPiano.setkeycolor(userButton, 5);
+							if(isControl) {
+								myPiano.setkeycolor(53, 5);
+								myPiano.setkeycolor(57,2);
+							}
+							if (whitePianoCode != -1) {
+								myPiano.btnPianoWhite[whitePianoCode].setIcon(null);
+							}
+
+						} else {
+							if (whitePianoCode != -1) {
+								Thread.sleep(durationInt);
+								myPiano.btnPianoWhite[whitePianoCode].setIcon(null);
+							}
 						}
 					}
-				}
-				else{
-					if (i != -1) {
-						Thread.sleep(durationInt);
-						myPiano.btnPianoWhite[i].setIcon(null);
+					else{
+						if (whitePianoCode != -1) {
+							Thread.sleep(durationInt);
+							myPiano.btnPianoWhite[whitePianoCode].setIcon(null);
+						}
 					}
-				}
-			} else {
+				} else {
 
-				music.isPlayed[index][num - 1] = true;
-			}
+					music.isPlayed[index][i] = true;
+				}
+		}
+		
 
 		}
 	}

@@ -22,7 +22,7 @@ public class OpenListener implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if (!myPiano.isPlaying) {
 			Playing playing = new Playing(myPiano);
-			playing.start();
+			if(playing.p!=null)playing.start();			
 		}else {
 			JOptionPane.showMessageDialog(null, "已有歌曲正在播放！");
 		}
