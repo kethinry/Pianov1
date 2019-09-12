@@ -123,7 +123,6 @@ public class Music {
 						j++;
 					}
 					musicPattern.add(pattern);
-					//System.out.println(pattern);
 				}
 			} catch (FileNotFoundException e1) {
 				e1.printStackTrace();

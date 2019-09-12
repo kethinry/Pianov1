@@ -49,7 +49,7 @@ public class KeyManager {
     public KeyProperty findByCode(int code){
         if(code2keys.containsKey(code))
             return code2keys.get(code);
-        System.out.println("No exsist key with input keycode!");
+        //System.out.println("No exsist key with input keycode!");
         KeyProperty errorkey = new KeyProperty(-1,"-1,-1,-1,-1,-1,n,n");
         return errorkey;
 
@@ -57,21 +57,21 @@ public class KeyManager {
     public KeyProperty findByIndex(int index){
         if(index<=index2keys.size())
             return index2keys.get(index);
-        System.out.println("No exsist key with input index!");
+        //System.out.println("No exsist key with input index!");
         KeyProperty errorkey = new KeyProperty(-1,"-1,-1,-1,-1,-1,n,n");
         return errorkey;
     }
     public KeyProperty findByCharacter(int character){
         if(character2keys.containsKey(character))
         return character2keys.get(character);
-        System.out.println("No exsist key with input character!");
+        //System.out.println("No exsist key with input character!");
         KeyProperty errorkey = new KeyProperty(-1,"-1,-1,-1,-1,-1,n,n");
         return errorkey;
     }
     public KeyProperty findByRiseCharacter(int risecharacter){
         if(character2keys.containsKey(risecharacter))
             return character2keys.get(risecharacter);
-        System.out.println("No exsist key with input risecharacter!");
+        //System.out.println("No exsist key with input risecharacter!");
         KeyProperty errorkey = new KeyProperty(-1,"-1,-1,-1,-1,-1,n,n");
         return errorkey;
     }
