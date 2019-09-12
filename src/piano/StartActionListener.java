@@ -66,8 +66,8 @@ public class StartActionListener implements ActionListener {
 		default:break;//示教模式
 		}
 		
-		myPiano.duration = myPiano.transformDuration(myPiano.jbxSetDuration.getSelectedIndex());
-		myPiano.instrument = "I" + String.valueOf(myPiano.transformInstrument(myPiano.jbxSetInstrument.getSelectedIndex()));
+		myPiano.duration = myPiano.trans.transformDuration(myPiano.jbxSetDuration.getSelectedIndex());
+		myPiano.instrument = "I" + String.valueOf(myPiano.trans.transformInstrument(myPiano.jbxSetInstrument.getSelectedIndex()));
 		myPiano.tone = myPiano.jbxSetTone.getSelectedIndex();
 		if (myPiano.tone >= 7)
 			myPiano.tone -= 12;

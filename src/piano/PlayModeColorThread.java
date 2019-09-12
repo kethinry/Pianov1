@@ -47,7 +47,7 @@ public class PlayModeColorThread extends Thread {
 					myPiano.btn[buttonCode].setBackground(Color.GREEN);
 				//myPiano.btn[myPiano.transformDurationToButtonCode(duration)].setBackground(myPiano.myGay);
 				try {
-					Thread.sleep(myPiano.transformDurationToTime(duration,80,false));
+					Thread.sleep(myPiano.trans.transformDurationToTime(duration,80,false));
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					//e.printStackTrace();

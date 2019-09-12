@@ -131,7 +131,7 @@ class PianoPanel extends JPanel {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			myPiano.settingwhitekey(i);
+			myPiano.settingkey.settingwhitekey(i);
 			int character = transformWhitePianoCodeToNewPianoCode(i) + 21;
 			KeyProperty key = myPiano.km.findByCharacter(character);
 

@@ -32,14 +32,14 @@ public class Note {
 
 	public void playNote() throws InterruptedException, MidiUnavailableException {// 播放这个音符
 		
-		durationInt = myPiano.transformDurationToTime(durationString, music.pace, isFudian);
+		durationInt = myPiano.trans.transformDurationToTime(durationString, music.pace, isFudian);
 		for(int i=0;i<num;i++) {
 			if (!music.isPlayed[index][i] && beginTime >= 0) {
 				if (character >= 0) {
 					music.isPlayed[index][i] = true;
 					int whitePianoCode = PianoPanel.transformCharaterToWhitePianoCode(character);
 
-					myPiano.settingwhitekey(whitePianoCode);
+					myPiano.settingkey.settingwhitekey(whitePianoCode);
 
 					KeyProperty key = myPiano.km.findByCharacter(character);
 					boolean isControl = false;
@@ -50,16 +50,16 @@ public class Note {
 					if(key.getIndex()!= -1) {
 						int userButton = key.getIndex();
 						if (userButton >= 0 && userButton < 60) {
-							myPiano.setkeycolor(userButton, 2);
+							myPiano.settingkey.setkeycolor(userButton, 2);
 							if(isControl){
-								myPiano.setkeycolor(53,2);//ctrol变亮
-								myPiano.setkeycolor(57,2);
+								myPiano.settingkey.setkeycolor(53,2);//ctrol变亮
+								myPiano.settingkey.setkeycolor(57,2);
 							}
 							Thread.sleep(durationInt);
-							myPiano.setkeycolor(userButton, 5);
+							myPiano.settingkey.setkeycolor(userButton, 5);
 							if(isControl) {
-								myPiano.setkeycolor(53, 5);
-								myPiano.setkeycolor(57,2);
+								myPiano.settingkey.setkeycolor(53, 5);
+								myPiano.settingkey.setkeycolor(57,2);
 							}
 							if (whitePianoCode != -1) {
 								myPiano.btnPianoWhite[whitePianoCode].setIcon(null);
