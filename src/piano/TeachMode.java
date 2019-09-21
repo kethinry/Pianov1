@@ -57,10 +57,16 @@ class TeachMode {
 			myPiano.btn[28].setBackground(Color.YELLOW);
 
 			myPiano.btn[myPiano.buttonCode[0]].setBackground(Color.YELLOW);
+			if (num>1) {
+				myPiano.btn[myPiano.buttonCode[1]].setBackground(myPiano.myGay);
+			}
 		} else {
 			myPiano.btn[myPiano.buttonCode[0]].setBackground(Color.YELLOW);
+			if (num>1) {
+				myPiano.btn[myPiano.buttonCode[1]].setBackground(myPiano.myGay);
+			}
 		}
-		myPiano.btn[myPiano.trans.transformDurationToButtonCode(myPiano.durations[0])].setBackground(myPiano.myGay);
+		//myPiano.btn[myPiano.trans.transformDurationToButtonCode(myPiano.durations[0])].setBackground(myPiano.myGay);
 
 	}
 

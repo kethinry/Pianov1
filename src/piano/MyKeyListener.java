@@ -39,6 +39,7 @@ public class MyKeyListener implements KeyListener {
 			userCharacter = key.getRisecharacter();
 		else userCharacter=key.getCharacter();
 		int userButton = key.getIndex();
+		
 		if(noteChannel[a] < 0){
 			noteChannel[a] = myPiano.getChannel(myPiano.trans.transformInstrument(myPiano.jbxSetInstrument.getSelectedIndex()));
 			long t = System.currentTimeMillis() - myPiano.beginTime;//当前时间减去按下开始演奏的时间
@@ -46,6 +47,7 @@ public class MyKeyListener implements KeyListener {
 				myPiano.timeString = myPiano.timeString + String.valueOf(t) + " ";
 				
 			}
+			
 			switch (myPiano.mode) {  //不同模式，按下键盘的色彩不同
 			case 0://自由演奏
 			case 2://乐谱记录
@@ -59,13 +61,15 @@ public class MyKeyListener implements KeyListener {
 						myPiano.streamingPlayer.stream(myPiano.createString.getStreamString(true,a,noteChannel[a],isCtrol));
 						//myPiano.player.play(myPiano.getString(a));
 						myPiano.settingkey.setkeycolor(userButton,2);
+						/*
 						if (myPiano.currentNum == myPiano.numOfNote - 1
 								|| myPiano.trans.transformDurationToButtonCode(myPiano.durations[myPiano.currentNum]) != myPiano.
 										trans.transformDurationToButtonCode(myPiano.durations[myPiano.currentNum + 1])) // 最后一个音符
-																													// 或者当前的音符不等于下一个音符，那么当前音符变白
+																													// 或者当前的音符不等于下一个音符，那么当前音符的duration对应的btn变白
 							myPiano.btn[myPiano.trans.transformDurationToButtonCode(myPiano.durations[myPiano.currentNum])]
 									.setBackground(Color.WHITE);
-					//就是上面这个if没懂
+						//就是上面这个if没懂
+						*/
 					} else {
 						if ((userButton >= 15 && userButton <= 24) || (userButton >= 29 && userButton <= 37)
 								|| (userButton >= 42 && userButton <= 48)) {
@@ -84,11 +88,9 @@ public class MyKeyListener implements KeyListener {
 							myPiano.settingkey.setkeycolor(userButton,4);
 						}
 						myPiano.isTruePressed = false;
-
 					}
 
 				} else {
-					
 					myPiano.refresh();
 					JOptionPane.showMessageDialog(null, "歌谱已结束！");
 
@@ -104,8 +106,6 @@ public class MyKeyListener implements KeyListener {
 			}
 
 		}
-
-
 	}
 
 	public void keyTyped(KeyEvent arg0) {
@@ -132,7 +132,7 @@ public class MyKeyListener implements KeyListener {
 				myPiano.currentNum++;
 				myPiano.isTruePressed = true;
 			}
-			if (myPiano.character[myPiano.currentNum] != 48 && myPiano.character[myPiano.currentNum] != 50
+			if (myPiano.currentNum < myPiano.numOfNote && myPiano.character[myPiano.currentNum] != 48 && myPiano.character[myPiano.currentNum] != 50
 					&& myPiano.character[myPiano.currentNum] != 52 && myPiano.character[myPiano.currentNum] != 53
 					&& myPiano.character[myPiano.currentNum] != 55 && myPiano.character[myPiano.currentNum] != 57
 					&& myPiano.character[myPiano.currentNum] != 59 && myPiano.character[myPiano.currentNum] != 60
@@ -146,10 +146,9 @@ public class MyKeyListener implements KeyListener {
 					&& myPiano.character[myPiano.currentNum] != 86 && myPiano.character[myPiano.currentNum] != 88) {
 				if (myPiano.isUpperLetter() || (!myPiano.isUpperLetter() && a != myPiano.keyCode[myPiano.currentNum]))
 					if (userButton >= 0) {
-
 						myPiano.btn[userButton].setBackground(Color.WHITE);
 					}
-			} else if (!myPiano.isUpperLetter() && (myPiano.character[myPiano.currentNum] == 48 || myPiano.character[myPiano.currentNum] == 50
+			} else if (myPiano.currentNum < myPiano.numOfNote && !myPiano.isUpperLetter() && (myPiano.character[myPiano.currentNum] == 48 || myPiano.character[myPiano.currentNum] == 50
 					|| myPiano.character[myPiano.currentNum] == 52 || myPiano.character[myPiano.currentNum] == 53
 					|| myPiano.character[myPiano.currentNum] == 55 || myPiano.character[myPiano.currentNum] == 57
 					|| myPiano.character[myPiano.currentNum] == 59 || myPiano.character[myPiano.currentNum] == 60
@@ -182,7 +181,24 @@ public class MyKeyListener implements KeyListener {
 						&& myPiano.character[myPiano.currentNum] != 86 && myPiano.character[myPiano.currentNum] != 88) {
 					myPiano.btn[28].setBackground(Color.YELLOW);
 					myPiano.btn[myPiano.buttonCode[myPiano.currentNum]].setBackground(Color.YELLOW);
+					if (myPiano.currentNum < myPiano.numOfNote - 1) {  // 后面还有音 那么下一个音变色
+						//System.out.println(myPiano.currentNum);
+						//System.out.println(myPiano.numOfNote);
+						int nextCharacter = myPiano.character[myPiano.currentNum+1];
+						if (nextCharacter != myPiano.character[myPiano.currentNum]) {
+							KeyProperty nextKey = myPiano.km.findByCharacter(nextCharacter);
+							if(nextKey.getIndex()== -1){
+								nextKey = myPiano.km.findByRiseCharacter(nextCharacter);
+								//isControl = true;
+							}
+							if(nextKey.getIndex()!= -1) {
+								int nextButton = nextKey.getIndex();
+								myPiano.btn[nextButton].setBackground(myPiano.myGay);
+							}	
+						}
+					}
 				} else {
+					/*
 					if (myPiano.character[myPiano.currentNum - 1] != 48 && myPiano.character[myPiano.currentNum - 1] != 50
 							&& myPiano.character[myPiano.currentNum - 1] != 52 && myPiano.character[myPiano.currentNum - 1] != 53
 							&& myPiano.character[myPiano.currentNum - 1] != 55 && myPiano.character[myPiano.currentNum - 1] != 57
@@ -196,11 +212,27 @@ public class MyKeyListener implements KeyListener {
 							&& myPiano.character[myPiano.currentNum - 1] != 83 && myPiano.character[myPiano.currentNum - 1] != 84
 							&& myPiano.character[myPiano.currentNum - 1] != 86 && myPiano.character[myPiano.currentNum - 1] != 88)
 						myPiano.btn[28].setBackground(myPiano.myGay);
-
+					*/
 					myPiano.btn[myPiano.buttonCode[myPiano.currentNum]].setBackground(Color.YELLOW);
+					if (myPiano.currentNum < myPiano.numOfNote - 1) {  // 后面还有音 那么下一个音变色
+						//System.out.println(myPiano.currentNum);
+						//System.out.println(myPiano.numOfNote);
+						int nextCharacter = myPiano.character[myPiano.currentNum+1];
+						if (nextCharacter != myPiano.character[myPiano.currentNum]) {
+							KeyProperty nextKey = myPiano.km.findByCharacter(nextCharacter);
+							if(nextKey.getIndex()== -1){
+								nextKey = myPiano.km.findByRiseCharacter(nextCharacter);
+								//isControl = true;
+							}
+							if(nextKey.getIndex()!= -1) {
+								int nextButton = nextKey.getIndex();
+								myPiano.btn[nextButton].setBackground(myPiano.myGay);
+							}	
+						}
+					}
 				}
-				myPiano.btn[myPiano.trans.transformDurationToButtonCode(myPiano.durations[myPiano.currentNum])]
-						.setBackground(myPiano.myGay);
+				//myPiano.btn[myPiano.trans.transformDurationToButtonCode(myPiano.durations[myPiano.currentNum])]
+				//		.setBackground(myPiano.myGay);
 
 			}
 			myPiano.isTruePressed = false;
@@ -225,5 +257,7 @@ public class MyKeyListener implements KeyListener {
 		if(whitecode<52&&whitecode>=0)
 		myPiano.btnPianoWhite[whitecode].setIcon(null);
 		noteChannel[a] = -1;
+		
 	}
+	
 }

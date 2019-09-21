@@ -49,7 +49,7 @@ public class CreateString {
             myPiano.lblWuXianPu.addNote(wxpNote);
         }
 
-        myPiano.numOfNote++;
+        //myPiano.numOfNote++;
         //System.out.println("note="+note);
 
         return note;
