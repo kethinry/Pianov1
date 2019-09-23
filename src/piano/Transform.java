@@ -7,7 +7,7 @@ public class Transform {
     }
 
     public String transiformCharacterToNewCharacter(int character) {
-        if (character<0)return "-1";
+        if (character<0)return "/";
         String s = "";
         int x,y;
         x = character%12;
